@@ -72,6 +72,9 @@ Public Class DesBNDBuild
         Dim currFilePath As String
         Dim currFileBytes() As Byte = {}
 
+        Dim fileList As String = ""
+
+
         filepath = Microsoft.VisualBasic.Left(txtBNDfile.Text, InStrRev(txtBNDfile.Text, "\"))
         filename = Microsoft.VisualBasic.Right(txtBNDfile.Text, txtBNDfile.Text.Length - filepath.Length)
 
@@ -90,7 +93,9 @@ Public Class DesBNDBuild
 
             currFileName = StrFromBytes(currFileNameOffset)
 
-            currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H1B)
+            fileList += currFileID & "," & currFileName & Environment.NewLine
+
+            currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
 
@@ -105,7 +110,10 @@ Public Class DesBNDBuild
 
 
 
+
         Next
+
+        File.WriteAllText(filepath & filename & ".extract\filelist.txt", fileList)
         txtInfo.Text += TimeOfDay & " - Extracted." & Environment.NewLine
     End Sub
     Private Sub btnRebuild_Click(sender As Object, e As EventArgs) Handles btnRebuild.Click
@@ -142,7 +150,7 @@ Public Class DesBNDBuild
             currFileNameOffset = UIntFromBytes(&H30 + i * &H18)
 
             currFileName = StrFromBytes(currFileNameOffset)
-            currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H1B)
+            currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
 
@@ -229,6 +237,15 @@ Public Class DesBNDBuild
 
 
     Private Sub btnBackup_Click(sender As Object, e As EventArgs) Handles btnBackup.Click
+        filepath = Microsoft.VisualBasic.Left(txtBNDfile.Text, InStrRev(txtBNDfile.Text, "\"))
+        filename = Microsoft.VisualBasic.Right(txtBNDfile.Text, txtBNDfile.Text.Length - filepath.Length)
 
+        If Not File.Exists(filepath & filename & ".bak") Then
+            bytes = File.ReadAllBytes(filepath & filename)
+            File.WriteAllBytes(filepath & filename & ".bak", bytes)
+            txtInfo.Text += TimeOfDay & " - Backed up." & Environment.NewLine
+        Else
+            txtInfo.Text += TimeOfDay & " - .bak already exists." & Environment.NewLine
+        End If
     End Sub
 End Class

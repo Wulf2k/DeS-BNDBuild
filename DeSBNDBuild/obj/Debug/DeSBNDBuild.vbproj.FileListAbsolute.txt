@@ -1,0 +1,10 @@
+E:\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\bin\Debug\DeSBNDBuild.exe.config
+E:\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\bin\Debug\DeSBNDBuild.exe
+E:\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\bin\Debug\DeSBNDBuild.pdb
+E:\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\bin\Debug\DeSBNDBuild.xml
+E:\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.DesBNDBuild.resources
+E:\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.Resources.resources
+E:\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.vbproj.GenerateResource.Cache
+E:\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.exe
+E:\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.xml
+E:\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.pdb
