@@ -92,11 +92,13 @@ Public Class DesBNDBuild
 
             currFileName = StrFromBytes(currFileNameOffset)
 
+            fileList += currFileID & "," & currFileName & Environment.NewLine
+
             currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
 
-            fileList += currFileID & "," & currFileName & Environment.NewLine
+
 
             If (Not System.IO.Directory.Exists(currFilePath)) Then
                 System.IO.Directory.CreateDirectory(currFilePath)
