@@ -74,7 +74,10 @@ Public Class DesBNDBuild
 
         Dim fileList As String = ""
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
         filepath = Microsoft.VisualBasic.Left(txtBNDfile.Text, InStrRev(txtBNDfile.Text, "\"))
         filename = Microsoft.VisualBasic.Right(txtBNDfile.Text, txtBNDfile.Text.Length - filepath.Length)
 
@@ -99,6 +102,8 @@ Public Class DesBNDBuild
             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
 
+
+
             If (Not System.IO.Directory.Exists(currFilePath)) Then
                 System.IO.Directory.CreateDirectory(currFilePath)
             End If
@@ -107,6 +112,7 @@ Public Class DesBNDBuild
             ReDim currFileBytes(currFileSize - 1)
             Array.Copy(bytes, currFileOffset, currFileBytes, 0, currFileSize)
             File.WriteAllBytes(currFilePath & currFileName, currFileBytes)
+<<<<<<< HEAD
 
 
 
@@ -114,6 +120,10 @@ Public Class DesBNDBuild
         Next
 
         File.WriteAllText(filepath & filename & ".extract\filelist.txt", fileList)
+=======
+        Next
+        File.WriteAllText(filepath & filename & ".extract\FileList.txt", fileList)
+>>>>>>> origin/master
         txtInfo.Text += TimeOfDay & " - Extracted." & Environment.NewLine
     End Sub
     Private Sub btnRebuild_Click(sender As Object, e As EventArgs) Handles btnRebuild.Click
@@ -174,6 +184,7 @@ Public Class DesBNDBuild
         File.WriteAllBytes(filepath & filename, bytes)
         txtInfo.Text += TimeOfDay & " - Rebuilt." & Environment.NewLine
     End Sub
+
     Public Function Decompress(ByVal cmpBytes() As Byte) As Byte()
         Dim sourceFile As MemoryStream = New MemoryStream(cmpBytes)
         Dim destFile As MemoryStream = New MemoryStream()
@@ -243,9 +254,15 @@ Public Class DesBNDBuild
         If Not File.Exists(filepath & filename & ".bak") Then
             bytes = File.ReadAllBytes(filepath & filename)
             File.WriteAllBytes(filepath & filename & ".bak", bytes)
+<<<<<<< HEAD
             txtInfo.Text += TimeOfDay & " - Backed up." & Environment.NewLine
         Else
             txtInfo.Text += TimeOfDay & " - .bak already exists." & Environment.NewLine
+=======
+            txtInfo.Text += TimeOfDay & " - " & filename & ".bak created." & Environment.NewLine
+        Else
+            txtInfo.Text += TimeOfDay & " - " & filename & ".bak already exists." & Environment.NewLine
+>>>>>>> origin/master
         End If
     End Sub
 End Class

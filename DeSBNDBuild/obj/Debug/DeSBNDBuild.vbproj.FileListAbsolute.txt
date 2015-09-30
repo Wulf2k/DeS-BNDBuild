@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 E:\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\bin\Debug\DeSBNDBuild.exe.config
 E:\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\bin\Debug\DeSBNDBuild.exe
 E:\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\bin\Debug\DeSBNDBuild.pdb
@@ -8,3 +9,15 @@ E:\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.vbproj.Gener
 E:\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.exe
 E:\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.xml
 E:\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.pdb
+=======
+C:\temp\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\bin\Debug\DeSBNDBuild.exe.config
+C:\temp\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\bin\Debug\DeSBNDBuild.exe
+C:\temp\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\bin\Debug\DeSBNDBuild.pdb
+C:\temp\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\bin\Debug\DeSBNDBuild.xml
+C:\temp\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.DesBNDBuild.resources
+C:\temp\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.Resources.resources
+C:\temp\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.vbproj.GenerateResource.Cache
+C:\temp\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.exe
+C:\temp\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.xml
+C:\temp\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.pdb
+>>>>>>> origin/master
