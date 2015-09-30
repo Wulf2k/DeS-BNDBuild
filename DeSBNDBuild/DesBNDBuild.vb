@@ -74,10 +74,7 @@ Public Class DesBNDBuild
 
         Dim fileList As String = ""
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
         filepath = Microsoft.VisualBasic.Left(txtBNDfile.Text, InStrRev(txtBNDfile.Text, "\"))
         filename = Microsoft.VisualBasic.Right(txtBNDfile.Text, txtBNDfile.Text.Length - filepath.Length)
 
@@ -112,18 +109,10 @@ Public Class DesBNDBuild
             ReDim currFileBytes(currFileSize - 1)
             Array.Copy(bytes, currFileOffset, currFileBytes, 0, currFileSize)
             File.WriteAllBytes(currFilePath & currFileName, currFileBytes)
-<<<<<<< HEAD
-
-
-
-
         Next
 
         File.WriteAllText(filepath & filename & ".extract\filelist.txt", fileList)
-=======
-        Next
-        File.WriteAllText(filepath & filename & ".extract\FileList.txt", fileList)
->>>>>>> origin/master
+
         txtInfo.Text += TimeOfDay & " - Extracted." & Environment.NewLine
     End Sub
     Private Sub btnRebuild_Click(sender As Object, e As EventArgs) Handles btnRebuild.Click
@@ -254,15 +243,9 @@ Public Class DesBNDBuild
         If Not File.Exists(filepath & filename & ".bak") Then
             bytes = File.ReadAllBytes(filepath & filename)
             File.WriteAllBytes(filepath & filename & ".bak", bytes)
-<<<<<<< HEAD
             txtInfo.Text += TimeOfDay & " - Backed up." & Environment.NewLine
         Else
             txtInfo.Text += TimeOfDay & " - .bak already exists." & Environment.NewLine
-=======
-            txtInfo.Text += TimeOfDay & " - " & filename & ".bak created." & Environment.NewLine
-        Else
-            txtInfo.Text += TimeOfDay & " - " & filename & ".bak already exists." & Environment.NewLine
->>>>>>> origin/master
         End If
     End Sub
 End Class
