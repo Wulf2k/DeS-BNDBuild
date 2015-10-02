@@ -72,7 +72,7 @@ Public Class DesBNDBuild
         Dim currFilePath As String
         Dim currFileBytes() As Byte = {}
 
-        Dim fileList As String = ""
+        Dim fileList As String
 
         filepath = Microsoft.VisualBasic.Left(txtBNDfile.Text, InStrRev(txtBNDfile.Text, "\"))
         filename = Microsoft.VisualBasic.Right(txtBNDfile.Text, txtBNDfile.Text.Length - filepath.Length)
@@ -84,26 +84,38 @@ Public Class DesBNDBuild
         numFiles = UIntFromBytes(&H10)
         namesEndLoc = UIntFromBytes(&H14)
 
+        fileList = flags & Environment.NewLine
+
         For i As UInteger = 0 To numFiles - 1
-            currFileSize = UIntFromBytes(&H24 + i * &H18)
-            currFileOffset = UIntFromBytes(&H28 + i * &H18)
-            currFileID = UIntFromBytes(&H2C + i * &H18)
-            currFileNameOffset = UIntFromBytes(&H30 + i * &H18)
 
-            currFileName = StrFromBytes(currFileNameOffset)
+            Select Case flags
+                Case &H10100
 
-            fileList += currFileID & "," & currFileName & Environment.NewLine
-
-            currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
-            currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
-            currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
-
-
+                Case &HE010100
+                    currFileSize = UIntFromBytes(&H24 + i * &H14)
+                    currFileOffset = UIntFromBytes(&H28 + i * &H14)
+                    currFileID = UIntFromBytes(&H2C + i * &H14)
+                    currFileNameOffset = UIntFromBytes(&H30 + i * &H14)
+                    currFileName = StrFromBytes(currFileNameOffset)
+                    fileList += currFileID & "," & currFileName & Environment.NewLine
+                    currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
+                    currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
+                    currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
+                Case &H2E010100
+                    currFileSize = UIntFromBytes(&H24 + i * &H18)
+                    currFileOffset = UIntFromBytes(&H28 + i * &H18)
+                    currFileID = UIntFromBytes(&H2C + i * &H18)
+                    currFileNameOffset = UIntFromBytes(&H30 + i * &H18)
+                    currFileName = StrFromBytes(currFileNameOffset)
+                    fileList += currFileID & "," & currFileName & Environment.NewLine
+                    currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
+                    currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
+                    currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
+            End Select
 
             If (Not System.IO.Directory.Exists(currFilePath)) Then
                 System.IO.Directory.CreateDirectory(currFilePath)
             End If
-
 
             ReDim currFileBytes(currFileSize - 1)
             Array.Copy(bytes, currFileOffset, currFileBytes, 0, currFileSize)
@@ -143,26 +155,52 @@ Public Class DesBNDBuild
 
 
         For i As UInteger = 0 To numFiles - 1
-            currFileNameOffset = UIntFromBytes(&H30 + i * &H18)
 
-            currFileName = StrFromBytes(currFileNameOffset)
-            currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
-            currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
-            currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
+            Select flags
+                Case &H10100
 
-            currFileBytes = File.ReadAllBytes(currFilePath & currFileName)
-            currFileSize = currFileBytes.Length
+                Case &HE010100
+                    currFileNameOffset = UIntFromBytes(&H30 + i * &H14)
 
-            If currFileSize Mod &H10 > 0 And i < numFiles - 1 Then
-                padding = &H10 - (currFileSize Mod &H10)
-            Else
-                padding = 0
-            End If
+                    currFileName = StrFromBytes(currFileNameOffset)
+                    currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
+                    currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
+                    currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
 
-            currFileOffset = bytes.Length
-            UINTToBytes(&H24 + i * &H18, currFileSize)
-            UINTToBytes(&H28 + i * &H18, currFileOffset)
-            UINTToBytes(&H34 + i * &H18, currFileSize)
+                    currFileBytes = File.ReadAllBytes(currFilePath & currFileName)
+                    currFileSize = currFileBytes.Length
+
+                    If currFileSize Mod &H10 > 0 And i < numFiles - 1 Then
+                        padding = &H10 - (currFileSize Mod &H10)
+                    Else
+                        padding = 0
+                    End If
+
+                    currFileOffset = bytes.Length
+                    UINTToBytes(&H24 + i * &H14, currFileSize)
+                    UINTToBytes(&H28 + i * &H14, currFileOffset)
+                Case &H2E010100
+                    currFileNameOffset = UIntFromBytes(&H30 + i * &H18)
+
+                    currFileName = StrFromBytes(currFileNameOffset)
+                    currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
+                    currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
+                    currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
+
+                    currFileBytes = File.ReadAllBytes(currFilePath & currFileName)
+                    currFileSize = currFileBytes.Length
+
+                    If currFileSize Mod &H10 > 0 And i < numFiles - 1 Then
+                        padding = &H10 - (currFileSize Mod &H10)
+                    Else
+                        padding = 0
+                    End If
+
+                    currFileOffset = bytes.Length
+                    UINTToBytes(&H24 + i * &H18, currFileSize)
+                    UINTToBytes(&H28 + i * &H18, currFileOffset)
+                    UINTToBytes(&H34 + i * &H18, currFileSize)
+            End Select
 
             ReDim Preserve bytes(bytes.Length + currFileSize + padding - 1)
             Array.Copy(currFileBytes, 0, bytes, currFileOffset, currFileSize)

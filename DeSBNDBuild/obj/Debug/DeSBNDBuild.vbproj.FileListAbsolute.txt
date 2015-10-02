@@ -8,3 +8,4 @@ C:\temp\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.vbproj.
 C:\temp\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.exe
 C:\temp\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.xml
 C:\temp\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.pdb
+C:\temp\VBProjects\GitHub\DeS-BNDBuild\DeSBNDBuild\obj\Debug\DeSBNDBuild.vbprojResolveAssemblyReference.cache
