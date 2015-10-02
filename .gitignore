@@ -42,6 +42,12 @@ Network Trash Folder
 Temporary Items
 .apdisk
 *.exe
+<<<<<<< HEAD
+=======
+*.pdb
+<<<<<<< HEAD
 *.pdb
 *.pdb
-*.pdb
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master
