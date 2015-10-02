@@ -64,15 +64,15 @@ Public Class DesBNDBuild
     End Sub
 
     Private Sub btnExtract_Click(sender As Object, e As EventArgs) Handles btnExtract.Click
-        Dim currFileSize As UInteger
-        Dim currFileOffset As UInteger
-        Dim currFileID As UInteger
-        Dim currFileNameOffset As UInteger
-        Dim currFileName As String
-        Dim currFilePath As String
+        Dim currFileSize As UInteger = 0
+        Dim currFileOffset As UInteger = 0
+        Dim currFileID As UInteger = 0
+        Dim currFileNameOffset As UInteger = 0
+        Dim currFileName As String = ""
+        Dim currFilePath As String = ""
         Dim currFileBytes() As Byte = {}
 
-        Dim fileList As String
+        Dim fileList As String = ""
 
 
         filepath = Microsoft.VisualBasic.Left(txtBNDfile.Text, InStrRev(txtBNDfile.Text, "\"))
@@ -132,18 +132,18 @@ Public Class DesBNDBuild
 
         File.WriteAllText(filepath & filename & ".extract\filelist.txt", fileList)
 
-        txtInfo.Text += TimeOfDay & " - Extracted." & Environment.NewLine
+        txtInfo.Text += TimeOfDay & " - " & filename & " extracted." & Environment.NewLine
     End Sub
     Private Sub btnRebuild_Click(sender As Object, e As EventArgs) Handles btnRebuild.Click
-        Dim currFileSize As UInteger
-        Dim currFileOffset As UInteger
-        Dim currFileNameOffset As UInteger
-        Dim currFileName As String
-        Dim currFilePath As String
+        Dim currFileSize As UInteger = 0
+        Dim currFileOffset As UInteger = 0
+        Dim currFileNameOffset As UInteger = 0
+        Dim currFileName As String = ""
+        Dim currFilePath As String = ""
         Dim currFileBytes() As Byte = {}
-        Dim fileList As String()
+        Dim fileList As String() = {""}
 
-        Dim padding As UInteger
+        Dim padding As UInteger = 0
 
         filepath = Microsoft.VisualBasic.Left(txtBNDfile.Text, InStrRev(txtBNDfile.Text, "\"))
         filename = Microsoft.VisualBasic.Right(txtBNDfile.Text, txtBNDfile.Text.Length - filepath.Length)
@@ -236,7 +236,7 @@ Public Class DesBNDBuild
             Array.Copy(currFileBytes, 0, bytes, currFileOffset, currFileSize)
         Next
         File.WriteAllBytes(filepath & filename, bytes)
-        txtInfo.Text += TimeOfDay & " - Rebuilt." & Environment.NewLine
+        txtInfo.Text += TimeOfDay & " - " & filename & " rebuilt." & Environment.NewLine
     End Sub
 
     Public Function Decompress(ByVal cmpBytes() As Byte) As Byte()
@@ -308,9 +308,9 @@ Public Class DesBNDBuild
         If Not File.Exists(filepath & filename & ".bak") Then
             bytes = File.ReadAllBytes(filepath & filename)
             File.WriteAllBytes(filepath & filename & ".bak", bytes)
-            txtInfo.Text += TimeOfDay & " - Backed up." & Environment.NewLine
+            txtInfo.Text += TimeOfDay & " - " & filename & ".bak created." & Environment.NewLine
         Else
-            txtInfo.Text += TimeOfDay & " - .bak already exists." & Environment.NewLine
+            txtInfo.Text += TimeOfDay & " - " & filename & ".bak already exists." & Environment.NewLine
         End If
     End Sub
 End Class

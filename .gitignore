@@ -52,3 +52,5 @@ Temporary Items
 >>>>>>> origin/master
 >>>>>>> origin/master
 *.pdb
+DeSBNDBuild/obj/Debug/DeSBNDBuild.pdb
+*.pdb
