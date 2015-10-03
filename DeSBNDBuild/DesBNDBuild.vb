@@ -94,7 +94,7 @@ Public Class DesBNDBuild
                     currFileSize = UIntFromBytes(&H24 + i * &HC)
                     currFileOffset = UIntFromBytes(&H28 + i * &HC)
                     currFileID = i
-                    currFileName = i & "." & StrFromBytes(currFileOffset)
+                    currFileName = i & "." & Microsoft.VisualBasic.Left(StrFromBytes(currFileOffset), 4)
                     fileList += currFileName & Environment.NewLine
                     currFileName = filepath & filename & ".extract\" & currFileName
                     currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
