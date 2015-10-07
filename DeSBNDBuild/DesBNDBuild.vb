@@ -64,75 +64,115 @@ Public Class DesBNDBuild
     End Sub
 
     Private Sub btnExtract_Click(sender As Object, e As EventArgs) Handles btnExtract.Click
-        Dim currFileSize As UInteger = 0
-        Dim currFileOffset As UInteger = 0
-        Dim currFileID As UInteger = 0
-        Dim currFileNameOffset As UInteger = 0
+
         Dim currFileName As String = ""
         Dim currFilePath As String = ""
-        Dim currFileBytes() As Byte = {}
-
-        Dim fileList As String = ""
-
 
         filepath = Microsoft.VisualBasic.Left(txtBNDfile.Text, InStrRev(txtBNDfile.Text, "\"))
         filename = Microsoft.VisualBasic.Right(txtBNDfile.Text, txtBNDfile.Text.Length - filepath.Length)
 
         bytes = File.ReadAllBytes(filepath & filename)
 
-        BinderID = StrFromBytes(&H0)
-        flags = UIntFromBytes(&HC)
-        numFiles = UIntFromBytes(&H10)
-        namesEndLoc = UIntFromBytes(&H14)
+        If Not File.Exists(filepath & filename & ".bak") Then
+            bytes = File.ReadAllBytes(filepath & filename)
+            File.WriteAllBytes(filepath & filename & ".bak", bytes)
+            txtInfo.Text += TimeOfDay & " - " & filename & ".bak created." & Environment.NewLine
+        Else
+            txtInfo.Text += TimeOfDay & " - " & filename & ".bak already exists." & Environment.NewLine
+        End If
 
-        fileList = flags & Environment.NewLine
+        Select Case Microsoft.VisualBasic.Left(StrFromBytes(0), 3)
+            Case "BND"
+                Dim currFileSize As UInteger = 0
+                Dim currFileOffset As UInteger = 0
+                Dim currFileID As UInteger = 0
+                Dim currFileNameOffset As UInteger = 0
+                Dim currFileBytes() As Byte = {}
+                Dim fileList As String = ""
 
-        For i As UInteger = 0 To numFiles - 1
+                BinderID = StrFromBytes(&H0)
+                flags = UIntFromBytes(&HC)
+                numFiles = UIntFromBytes(&H10)
+                namesEndLoc = UIntFromBytes(&H14)
 
-            Select Case flags
-                Case &H10100
-                    currFileSize = UIntFromBytes(&H24 + i * &HC)
-                    currFileOffset = UIntFromBytes(&H28 + i * &HC)
-                    currFileID = i
-                    currFileName = i & "." & Microsoft.VisualBasic.Left(StrFromBytes(currFileOffset), 4)
-                    fileList += currFileName & Environment.NewLine
-                    currFileName = filepath & filename & ".extract\" & currFileName
-                    currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
-                    currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
-                Case &HE010100
-                    currFileSize = UIntFromBytes(&H24 + i * &H14)
-                    currFileOffset = UIntFromBytes(&H28 + i * &H14)
-                    currFileID = UIntFromBytes(&H2C + i * &H14)
-                    currFileNameOffset = UIntFromBytes(&H30 + i * &H14)
-                    currFileName = StrFromBytes(currFileNameOffset)
-                    fileList += currFileID & "," & currFileName & Environment.NewLine
-                    currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
-                    currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
-                    currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
-                Case &H2E010100
-                    currFileSize = UIntFromBytes(&H24 + i * &H18)
-                    currFileOffset = UIntFromBytes(&H28 + i * &H18)
-                    currFileID = UIntFromBytes(&H2C + i * &H18)
-                    currFileNameOffset = UIntFromBytes(&H30 + i * &H18)
-                    currFileName = StrFromBytes(currFileNameOffset)
-                    fileList += currFileID & "," & currFileName & Environment.NewLine
-                    currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
-                    currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
-                    currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
-            End Select
+                fileList = flags & Environment.NewLine
 
-            If (Not System.IO.Directory.Exists(currFilePath)) Then
-                System.IO.Directory.CreateDirectory(currFilePath)
-            End If
+                For i As UInteger = 0 To numFiles - 1
+                    Select Case flags
+                        Case &H10100
+                            currFileSize = UIntFromBytes(&H24 + i * &HC)
+                            currFileOffset = UIntFromBytes(&H28 + i * &HC)
+                            currFileID = i
+                            currFileName = i & "." & Microsoft.VisualBasic.Left(StrFromBytes(currFileOffset), 4)
+                            fileList += currFileName & Environment.NewLine
+                            currFileName = filepath & filename & ".extract\" & currFileName
+                            currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
+                            currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
+                        Case &HE010100
+                            currFileSize = UIntFromBytes(&H24 + i * &H14)
+                            currFileOffset = UIntFromBytes(&H28 + i * &H14)
+                            currFileID = UIntFromBytes(&H2C + i * &H14)
+                            currFileNameOffset = UIntFromBytes(&H30 + i * &H14)
+                            currFileName = StrFromBytes(currFileNameOffset)
+                            fileList += currFileID & "," & currFileName & Environment.NewLine
+                            currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
+                            currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
+                            currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
+                        Case &H2E010100
+                            currFileSize = UIntFromBytes(&H24 + i * &H18)
+                            currFileOffset = UIntFromBytes(&H28 + i * &H18)
+                            currFileID = UIntFromBytes(&H2C + i * &H18)
+                            currFileNameOffset = UIntFromBytes(&H30 + i * &H18)
+                            currFileName = StrFromBytes(currFileNameOffset)
+                            fileList += currFileID & "," & currFileName & Environment.NewLine
+                            currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
+                            currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
+                            currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
+                    End Select
 
-            ReDim currFileBytes(currFileSize - 1)
-            Array.Copy(bytes, currFileOffset, currFileBytes, 0, currFileSize)
-            File.WriteAllBytes(currFilePath & currFileName, currFileBytes)
-        Next
+                    If (Not System.IO.Directory.Exists(currFilePath)) Then
+                        System.IO.Directory.CreateDirectory(currFilePath)
+                    End If
 
-        File.WriteAllText(filepath & filename & ".extract\filelist.txt", fileList)
+                    ReDim currFileBytes(currFileSize - 1)
+                    Array.Copy(bytes, currFileOffset, currFileBytes, 0, currFileSize)
+                    File.WriteAllBytes(currFilePath & currFileName, currFileBytes)
+                Next
 
-        txtInfo.Text += TimeOfDay & " - " & filename & " extracted." & Environment.NewLine
+                File.WriteAllText(filepath & filename & ".extract\filelist.txt", fileList)
+                txtInfo.Text += TimeOfDay & " - " & filename & " extracted." & Environment.NewLine
+
+
+
+            Case "DCX"
+                Dim newbytes(&H10000) As Byte
+                Dim decbytes(&H10000) As Byte
+                Dim bytes2(UIntFromBytes(&H1C) - 1) As Byte
+
+                Dim numChunks As UInteger = UIntFromBytes(&H68)
+                Dim DecSize As UInteger
+
+                For i = 0 To numChunks - 1
+                    If i = numChunks - 1 Then
+                        DecSize = bytes2.Length - DecSize * i
+                    Else
+                        DecSize = &H10000
+                    End If
+
+                    Array.Copy(bytes, &H120 + UIntFromBytes(&H74 + i * &H10), newbytes, 0, UIntFromBytes(&H78 + i * &H10))
+                    decbytes = Decompress(newbytes)
+                    Array.Copy(decbytes, 0, bytes2, &H10000 * i, DecSize)
+                Next
+
+                currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Left(filename, filename.Length - &H4)
+                currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
+
+                If (Not System.IO.Directory.Exists(currFilePath)) Then
+                    System.IO.Directory.CreateDirectory(currFilePath)
+                End If
+
+                File.WriteAllBytes(currFileName, bytes2)
+        End Select
     End Sub
     Private Sub btnRebuild_Click(sender As Object, e As EventArgs) Handles btnRebuild.Click
         Dim currFileSize As UInteger = 0
@@ -255,42 +295,6 @@ Public Class DesBNDBuild
 
         Return destFile.ToArray
     End Function
-    Private Sub btnDecompress_Click(sender As Object, e As EventArgs) Handles btnDecompress.Click
-        filepath = Microsoft.VisualBasic.Left(txtBNDfile.Text, InStrRev(txtBNDfile.Text, "\"))
-        filename = Microsoft.VisualBasic.Right(txtBNDfile.Text, txtBNDfile.Text.Length - filepath.Length)
-
-        bytes = File.ReadAllBytes(filepath & filename)
-
-
-        Dim newbytes(&H44D9) As Byte
-        Dim decbytes(&H10000) As Byte
-
-        Array.Copy(bytes, &H120, newbytes, 0, &H44D9)
-
-        decbytes = Decompress(newbytes)
-
-
-    End Sub
-    Private Sub btnCompress_Click(sender As Object, e As EventArgs) Handles btnCompress.Click
-        filepath = Microsoft.VisualBasic.Left(txtBNDfile.Text, InStrRev(txtBNDfile.Text, "\"))
-        filename = Microsoft.VisualBasic.Right(txtBNDfile.Text, txtBNDfile.Text.Length - filepath.Length)
-
-        bytes = File.ReadAllBytes(filepath & filename)
-        Dim newbytes() As Byte
-
-
-        Dim stream = New MemoryStream()
-        Dim zipStream = New DeflateStream(stream, CompressionLevel.Optimal)
-        zipStream.Write(bytes, 0, 65536)
-        zipStream.Close()
-
-        newbytes = stream.ToArray()
-
-
-
-
-        File.WriteAllBytes(filepath & filename & ".test", newbytes)
-    End Sub
 
     Private Sub txt_Drop(sender As Object, e As System.Windows.Forms.DragEventArgs) Handles txtBNDfile.DragDrop
         Dim file() As String = e.Data.GetData(DataFormats.FileDrop)
@@ -298,19 +302,5 @@ Public Class DesBNDBuild
     End Sub
     Private Sub txt_DragEnter(sender As Object, e As System.Windows.Forms.DragEventArgs) Handles txtBNDfile.DragEnter
         e.Effect = DragDropEffects.Copy
-    End Sub
-
-
-    Private Sub btnBackup_Click(sender As Object, e As EventArgs) Handles btnBackup.Click
-        filepath = Microsoft.VisualBasic.Left(txtBNDfile.Text, InStrRev(txtBNDfile.Text, "\"))
-        filename = Microsoft.VisualBasic.Right(txtBNDfile.Text, txtBNDfile.Text.Length - filepath.Length)
-
-        If Not File.Exists(filepath & filename & ".bak") Then
-            bytes = File.ReadAllBytes(filepath & filename)
-            File.WriteAllBytes(filepath & filename & ".bak", bytes)
-            txtInfo.Text += TimeOfDay & " - " & filename & ".bak created." & Environment.NewLine
-        Else
-            txtInfo.Text += TimeOfDay & " - " & filename & ".bak already exists." & Environment.NewLine
-        End If
     End Sub
 End Class

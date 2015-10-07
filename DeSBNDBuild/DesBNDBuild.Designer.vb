@@ -28,9 +28,6 @@ Partial Class DesBNDBuild
         Me.btnRebuild = New System.Windows.Forms.Button()
         Me.btnExtract = New System.Windows.Forms.Button()
         Me.txtInfo = New System.Windows.Forms.TextBox()
-        Me.btnCompress = New System.Windows.Forms.Button()
-        Me.btnDecompress = New System.Windows.Forms.Button()
-        Me.btnBackup = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'txtBNDfile
@@ -86,43 +83,11 @@ Partial Class DesBNDBuild
         Me.txtInfo.Size = New System.Drawing.Size(548, 142)
         Me.txtInfo.TabIndex = 31
         '
-        'btnCompress
-        '
-        Me.btnCompress.Enabled = False
-        Me.btnCompress.Location = New System.Drawing.Point(92, 33)
-        Me.btnCompress.Name = "btnCompress"
-        Me.btnCompress.Size = New System.Drawing.Size(75, 23)
-        Me.btnCompress.TabIndex = 33
-        Me.btnCompress.Text = "Compress"
-        Me.btnCompress.UseVisualStyleBackColor = True
-        '
-        'btnDecompress
-        '
-        Me.btnDecompress.Enabled = False
-        Me.btnDecompress.Location = New System.Drawing.Point(14, 33)
-        Me.btnDecompress.Name = "btnDecompress"
-        Me.btnDecompress.Size = New System.Drawing.Size(75, 23)
-        Me.btnDecompress.TabIndex = 32
-        Me.btnDecompress.Text = "Decompress"
-        Me.btnDecompress.UseVisualStyleBackColor = True
-        '
-        'btnBackup
-        '
-        Me.btnBackup.Location = New System.Drawing.Point(288, 33)
-        Me.btnBackup.Name = "btnBackup"
-        Me.btnBackup.Size = New System.Drawing.Size(75, 23)
-        Me.btnBackup.TabIndex = 34
-        Me.btnBackup.Text = "Backup"
-        Me.btnBackup.UseVisualStyleBackColor = True
-        '
         'DesBNDBuild
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(572, 216)
-        Me.Controls.Add(Me.btnBackup)
-        Me.Controls.Add(Me.btnCompress)
-        Me.Controls.Add(Me.btnDecompress)
         Me.Controls.Add(Me.txtInfo)
         Me.Controls.Add(Me.btnRebuild)
         Me.Controls.Add(Me.btnExtract)
@@ -141,8 +106,5 @@ Partial Class DesBNDBuild
     Friend WithEvents btnRebuild As System.Windows.Forms.Button
     Friend WithEvents btnExtract As System.Windows.Forms.Button
     Friend WithEvents txtInfo As System.Windows.Forms.TextBox
-    Friend WithEvents btnCompress As System.Windows.Forms.Button
-    Friend WithEvents btnDecompress As System.Windows.Forms.Button
-    Friend WithEvents btnBackup As System.Windows.Forms.Button
 
 End Class
