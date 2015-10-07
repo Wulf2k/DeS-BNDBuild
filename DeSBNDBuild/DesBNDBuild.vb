@@ -67,6 +67,7 @@ Public Class DesBNDBuild
 
         Dim currFileName As String = ""
         Dim currFilePath As String = ""
+        Dim fileList As String = ""
 
         filepath = Microsoft.VisualBasic.Left(txtBNDfile.Text, InStrRev(txtBNDfile.Text, "\"))
         filename = Microsoft.VisualBasic.Right(txtBNDfile.Text, txtBNDfile.Text.Length - filepath.Length)
@@ -88,14 +89,13 @@ Public Class DesBNDBuild
                 Dim currFileID As UInteger = 0
                 Dim currFileNameOffset As UInteger = 0
                 Dim currFileBytes() As Byte = {}
-                Dim fileList As String = ""
 
                 BinderID = StrFromBytes(&H0)
                 flags = UIntFromBytes(&HC)
                 numFiles = UIntFromBytes(&H10)
                 namesEndLoc = UIntFromBytes(&H14)
 
-                fileList = flags & Environment.NewLine
+                fileList = BinderID & Environment.NewLine & flags & Environment.NewLine
 
                 For i As UInteger = 0 To numFiles - 1
                     Select Case flags
@@ -139,18 +139,16 @@ Public Class DesBNDBuild
                     File.WriteAllBytes(currFilePath & currFileName, currFileBytes)
                 Next
 
-                File.WriteAllText(filepath & filename & ".extract\filelist.txt", fileList)
-                txtInfo.Text += TimeOfDay & " - " & filename & " extracted." & Environment.NewLine
-
-
-
             Case "DCX"
                 Dim newbytes(&H10000) As Byte
                 Dim decbytes(&H10000) As Byte
                 Dim bytes2(UIntFromBytes(&H1C) - 1) As Byte
 
+                Dim startOffset As UInteger = UIntFromBytes(&H14) + &H20
                 Dim numChunks As UInteger = UIntFromBytes(&H68)
                 Dim DecSize As UInteger
+
+                fileList = StrFromBytes(&H28) & Environment.NewLine & Microsoft.VisualBasic.Left(filename, filename.Length - &H4) & Environment.NewLine
 
                 For i = 0 To numChunks - 1
                     If i = numChunks - 1 Then
@@ -159,7 +157,7 @@ Public Class DesBNDBuild
                         DecSize = &H10000
                     End If
 
-                    Array.Copy(bytes, &H120 + UIntFromBytes(&H74 + i * &H10), newbytes, 0, UIntFromBytes(&H78 + i * &H10))
+                    Array.Copy(bytes, startOffset + UIntFromBytes(&H74 + i * &H10), newbytes, 0, UIntFromBytes(&H78 + i * &H10))
                     decbytes = Decompress(newbytes)
                     Array.Copy(decbytes, 0, bytes2, &H10000 * i, DecSize)
                 Next
@@ -173,6 +171,9 @@ Public Class DesBNDBuild
 
                 File.WriteAllBytes(currFileName, bytes2)
         End Select
+
+        File.WriteAllText(filepath & filename & ".extract\filelist.txt", fileList)
+        txtInfo.Text += TimeOfDay & " - " & filename & " extracted." & Environment.NewLine
     End Sub
     Private Sub btnRebuild_Click(sender As Object, e As EventArgs) Handles btnRebuild.Click
         Dim currFileSize As UInteger = 0
