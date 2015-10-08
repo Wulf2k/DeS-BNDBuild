@@ -269,7 +269,6 @@ Public Class DesBNDBuild
                             UINTToBytes(&H2000000, &H20 + i * &H14)
                             UINTToBytes(currFileOffset, &H28 + i * &H14)
                             UINTToBytes(currFileSize, &H2C + i * &H14)
-                            MsgBox i
 
                         Case &HE010100
                             currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(fileList(i + 2), fileList(i + 2).Length - (InStr(fileList(i + 2), ",") + 3))
