@@ -67,7 +67,6 @@ Public Class DesBNDBuild
     End Sub
 
     Private Sub btnExtract_Click(sender As Object, e As EventArgs) Handles btnExtract.Click
-
         Dim currFileName As String = ""
         Dim currFilePath As String = ""
         Dim fileList As String = ""
@@ -90,8 +89,8 @@ Public Class DesBNDBuild
             txtInfo.Text += TimeOfDay & " - " & filename & ".bak already exists." & Environment.NewLine
         End If
 
-        Select Case Microsoft.VisualBasic.Left(StrFromBytes(0), 3)
-            Case "BND"
+        Select Case Microsoft.VisualBasic.Left(StrFromBytes(0), 4)
+            Case "BND3"
                 Dim currFileSize As UInteger = 0
                 Dim currFileOffset As UInteger = 0
                 Dim currFileID As UInteger = 0
@@ -205,8 +204,8 @@ Public Class DesBNDBuild
 
         fileList = File.ReadAllLines(filepath & filename & ".extract\" & "fileList.txt")
 
-        Select Case Microsoft.VisualBasic.Left(fileList(0), 3)
-            Case "BND"
+        Select Case Microsoft.VisualBasic.Left(fileList(0), 4)
+            Case "BND3"
                 ReDim bytes(&H1F)
                 StrToBytes(fileList(0), 0)
 
@@ -217,11 +216,9 @@ Public Class DesBNDBuild
                     namesEndLoc += fileList(i).Length - InStr(fileList(i), ",") + 1
                 Next
 
-
                 Select Case flags
                     Case &H10100
                         namesEndLoc = &H20 + &HC * numFiles
-                        MsgBox(Hex(namesEndLoc))
                     Case &HE010100
                         currFileNameOffset = &H20 + &H14 * numFiles
                         namesEndLoc += &H20 + &H14 * numFiles
@@ -229,7 +226,6 @@ Public Class DesBNDBuild
                         currFileNameOffset = &H20 + &H18 * numFiles
                         namesEndLoc += &H20 + &H18 * numFiles
                 End Select
-
 
                 UINTToBytes(flags, &HC)
                 UINTToBytes(numFiles, &H10)
@@ -241,13 +237,9 @@ Public Class DesBNDBuild
                     padding = 0
                 End If
 
-
-
                 ReDim Preserve bytes(namesEndLoc + padding - 1)
 
                 currFileOffset = namesEndLoc + padding
-
-
 
                 For i As UInteger = 0 To numFiles - 1
                     Select Case flags
@@ -266,9 +258,15 @@ Public Class DesBNDBuild
                                 padding = 0
                             End If
 
-                            UINTToBytes(&H2000000, &H20 + i * &H14)
-                            UINTToBytes(currFileOffset, &H28 + i * &H14)
-                            UINTToBytes(currFileSize, &H2C + i * &H14)
+                            UINTToBytes(&H2000000, &H20 + i * &HC)
+                            UINTToBytes(currFileSize, &H24 + i * &HC)
+                            UINTToBytes(currFileOffset, &H28 + i * &HC)
+
+                            ReDim Preserve bytes(bytes.Length + tmpbytes.Length + padding - 1)
+
+                            InsBytes(tmpbytes, currFileOffset)
+
+                            currFileOffset += tmpbytes.Length + padding
 
                         Case &HE010100
                             currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(fileList(i + 2), fileList(i + 2).Length - (InStr(fileList(i + 2), ",") + 3))
