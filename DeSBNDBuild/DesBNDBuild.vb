@@ -56,7 +56,7 @@ Public Class DesBNDBuild
     Private Sub btnBrowse_Click(sender As Object, e As EventArgs) Handles btnBrowse.Click
         Dim openDlg As New OpenFileDialog()
 
-        openDlg.Filter = "DeS DCX/BND File|*BND;*DCX"
+        openDlg.Filter = "DeS DCX/BND File|*BND;*MOWB;*DCX"
         openDlg.Title = "Open your BND file"
 
         If openDlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -335,7 +335,91 @@ Public Class DesBNDBuild
                             currFileNameOffset += Microsoft.VisualBasic.Right(fileList(i + 2), fileList(i + 2).Length - (InStr(fileList(i + 2), ","))).Length + 1
                     End Select
                 Next
-            Case "DCX"
+            Case "EDGE"
+                Dim chunkBytes(&H10000) As Byte
+                Dim cmpChunkBytes() As Byte
+                Dim zipBytes() As Byte = {}
+
+                currFileName = filepath + filename + ".extract\" + fileList(1)
+                tmpbytes = File.ReadAllBytes(currFileName)
+
+                currFileSize = tmpbytes.Length
+
+                ReDim bytes(&H83)
+
+                Dim fileRemaining As Integer = tmpbytes.Length
+                Dim fileDone As Integer = 0
+                Dim fileToDo As Integer = 0
+                Dim chunks = 0
+                Dim lastchunk = 0
+
+                While fileRemaining > 0
+                    chunks += 1
+
+                    If fileRemaining > &H10000 Then
+                        fileToDo = &H10000
+                    Else
+                        fileToDo = fileRemaining
+                    End If
+
+
+                    Array.Copy(tmpbytes, fileDone, chunkBytes, 0, fileToDo)
+                    cmpChunkBytes = Compress(chunkBytes)
+
+                    lastchunk = zipBytes.Length
+
+                    If lastchunk Mod &H10 > 0 Then
+                        padding = &H10 - (lastchunk Mod &H10)
+                    Else
+                        padding = 0
+                    End If
+                    lastchunk += padding
+
+                    ReDim Preserve zipBytes(lastchunk + cmpChunkBytes.Length)
+                    Array.Copy(cmpChunkBytes, 0, zipBytes, lastchunk, cmpChunkBytes.Length)
+
+
+                    fileDone += fileToDo
+                    fileRemaining -= fileToDo
+
+                    ReDim Preserve bytes(bytes.Length + &H10)
+
+                    UINTToBytes(lastchunk, &H64 + chunks * &H10)
+                    UINTToBytes(cmpChunkBytes.Length, &H68 + chunks * &H10)
+                    UINTToBytes(&H1, &H6C + chunks * &H10)
+
+                End While
+                ReDim Preserve bytes(bytes.Length + zipBytes.Length)
+
+                StrToBytes("DCX", &H0)
+                UINTToBytes(&H10000, &H4)
+                UINTToBytes(&H18, &H8)
+                UINTToBytes(&H24, &HC)
+                UINTToBytes(&H24, &H10)
+                UINTToBytes(&H50 + chunks * &H10, &H14)
+                StrToBytes("DCS", &H18)
+                UINTToBytes(currFileSize, &H1C)
+                UINTToBytes(bytes.Length - (&H70 + chunks * &H10), &H20)
+                StrToBytes("DCP", &H24)
+                StrToBytes("EDGE", &H28)
+                UINTToBytes(&H20, &H2C)
+                UINTToBytes(&H9000000, &H30)
+                UINTToBytes(&H10000, &H34)
+
+                UINTToBytes(&H100100, &H40)
+                StrToBytes("DCA", &H44)
+                UINTToBytes(chunks * &H10 + &H2C, &H48)
+                StrToBytes("EgdT", &H4C)
+                UINTToBytes(&H10100, &H50)
+                UINTToBytes(&H24, &H54)
+                UINTToBytes(&H10, &H58)
+                UINTToBytes(&H10000, &H5C)
+                UINTToBytes(tmpbytes.Length Mod &H10000, &H60)
+                UINTToBytes(&H24 + chunks * &H10, &H64)
+                UINTToBytes(chunks, &H68)
+                UINTToBytes(&H100000, &H6C)
+
+                Array.Copy(zipBytes, 0, bytes, &H70 + chunks * &H10, zipBytes.Length)
 
         End Select
         File.WriteAllBytes(filepath & filename, bytes)
@@ -357,6 +441,21 @@ Public Class DesBNDBuild
         sourceFile.Close()
 
         Return destFile.ToArray
+    End Function
+    Public Function Compress(ByVal cmpBytes() As Byte) As Byte()
+        Dim ms As New MemoryStream()
+        Dim zipStream As Stream = Nothing
+
+        zipStream = New DeflateStream(ms, CompressionMode.Compress, True)
+        zipStream.Write(cmpBytes, 0, cmpBytes.Length)
+        zipStream.Close()
+
+        ms.Position = 0
+
+        Dim outBytes(ms.Length - 1) As Byte
+
+        ms.Read(outBytes, 0, ms.Length)
+        Return outBytes
     End Function
 
     Private Sub txt_Drop(sender As Object, e As System.Windows.Forms.DragEventArgs) Handles txtBNDfile.DragDrop
