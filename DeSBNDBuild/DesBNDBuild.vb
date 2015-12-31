@@ -1,7 +1,6 @@
 ﻿Imports System.IO
 Imports System.IO.Compression
 
-
 Public Class DesBNDBuild
     Public Shared bytes() As Byte
     Public Shared filename As String
@@ -28,7 +27,7 @@ Public Class DesBNDBuild
         Dim tmpUint As UInteger = 0
 
         For i = 0 To 3
-            tmpUint += Convert.ToUInt16(bytes(loc + i)) * &H100 ^ (3 - i)
+            tmpUint += Convert.ToUInt32(bytes(loc + i)) * &H100 ^ (3 - i)
         Next
 
         Return tmpUint
@@ -66,6 +65,25 @@ Public Class DesBNDBuild
 
     End Sub
 
+
+    Private Function HashFileName(filename As String) As UInteger
+
+        REM This code copied from https://github.com/Burton-Radons/Alexandria
+
+        If filename Is Nothing Then
+            Return 0
+        End If
+
+        Dim hash As UInteger = 0
+
+        For Each ch As Char In filename
+            hash = hash * &H25 + Asc(Char.ToLowerInvariant(ch))
+        Next
+
+        Return hash
+    End Function
+
+
     Private Sub btnExtract_Click(sender As Object, e As EventArgs) Handles btnExtract.Click
         Dim currFileName As String = ""
         Dim currFilePath As String = ""
@@ -90,6 +108,88 @@ Public Class DesBNDBuild
         End If
 
         Select Case Microsoft.VisualBasic.Left(StrFromBytes(0), 4)
+            Case "BHD5"
+                Select Case UIntFromBytes(&H4)
+                    Case 0
+                        fileList = "BHD5" & Environment.NewLine & "0" & Environment.NewLine
+
+                        Dim currFileSize As UInteger = 0
+                        Dim currFileOffset As UInteger = 0
+                        Dim currFileID As UInteger = 0
+                        Dim currFileNameOffset As UInteger = 0
+                        Dim currFileBytes() As Byte = {}
+
+                        Dim count As UInteger = 0
+
+                        Dim idx As Integer
+                        Dim fileidx() As String = My.Resources.fileidx.Replace(Chr(&HD), "").Split(Chr(&HA))
+                        Dim hashidx(fileidx.Length - 1) As UInteger
+
+                        For i = 0 To fileidx.Length - 1
+                            hashidx(i) = HashFileName(fileidx(i))
+                        Next
+
+                        flags = UIntFromBytes(&H4)
+                        numFiles = UIntFromBytes(&H10)
+
+                        filename = Microsoft.VisualBasic.Left(filename, filename.Length - 4) & "bdt"
+
+                        Dim BDTStream As New IO.FileStream(filepath & filename, IO.FileMode.Open)
+                        Dim bhdOffSet As UInteger
+
+                        For i As UInteger = 0 To numFiles - 1
+
+                            count = UIntFromBytes(&H18 + i * &H8)
+                            bhdOffSet = UIntFromBytes(&H1C + i * 8)
+
+
+                            For j = 0 To count - 1
+                                currFileSize = UIntFromBytes(bhdOffSet + &H4)
+                                currFileOffset = UIntFromBytes(bhdOffSet + &HC)
+
+                                ReDim currFileBytes(currFileSize - 1)
+
+                                BDTStream.Position = currFileOffset
+
+                                For k = 0 To currFileSize - 1
+                                    currFileBytes(k) = BDTStream.ReadByte
+                                Next
+
+                                currFileName = ""
+
+
+                                If hashidx.Contains(UIntFromBytes(bhdOffSet)) Then
+                                    idx = Array.IndexOf(hashidx, UIntFromBytes(bhdOffSet))
+
+                                    currFileName = fileidx(idx)
+                                    currFileName = currFileName.Replace("/", "\")
+                                    fileList += i & "," & currFileName & Environment.NewLine
+
+                                    currFileName = filepath & filename & ".extract" & currFileName
+                                    currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
+                                Else
+                                    idx = -1
+                                    currFileName = "NOMATCH-" & Hex(UIntFromBytes(bhdOffSet))
+                                    fileList += i & "," & currFileName & Environment.NewLine
+
+                                    currFileName = filepath & filename & ".extract\" & currFileName
+                                    currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
+                                End If
+
+                                If (Not System.IO.Directory.Exists(currFilePath)) Then
+                                    System.IO.Directory.CreateDirectory(currFilePath)
+                                End If
+
+                                File.WriteAllBytes(currFileName, currFileBytes)
+
+                                bhdOffSet += &H10
+                            Next
+
+
+                        Next
+                        BDTStream.Close()
+                        BDTStream.Dispose()
+                End Select
             Case "BND3"
                 Dim currFileSize As UInteger = 0
                 Dim currFileOffset As UInteger = 0
