@@ -221,6 +221,68 @@ Public Class DesBNDBuild
                         BDTStream.Close()
                         BDTStream.Dispose()
                 End Select
+            Case "BHF3"
+                fileList = "BHF3,"
+
+                Dim currFileSize As UInteger = 0
+                Dim currFileOffset As UInteger = 0
+                Dim currFileID As UInteger = 0
+                Dim currFileNameOffset As UInteger = 0
+                Dim currFileBytes() As Byte = {}
+
+                Dim count As UInteger = 0
+
+                flags = UIntFromBytes(&HC)
+                numFiles = UIntFromBytes(&H10)
+
+                filename = Microsoft.VisualBasic.Left(filename, filename.Length - 3)
+
+                If Not File.Exists(filepath & filename & "bdt.bak") Then
+                    File.Copy(filepath & filename & "bdt", filepath & filename & "bdt.bak")
+                    txtInfo.Text += TimeOfDay & " - " & filename & ".bdt.bak created." & Environment.NewLine
+                Else
+                    txtInfo.Text += TimeOfDay & " - " & filename & ".bdt.bak already exists." & Environment.NewLine
+                End If
+
+                Dim BDTStream As New IO.FileStream(filepath & filename & "bdt", IO.FileMode.Open)
+                Dim bhdOffSet As UInteger = &H20
+
+                BinderID = StrFromBytes(&H4)
+                fileList = fileList & BinderID & Environment.NewLine & flags & Environment.NewLine
+
+
+                For i As UInteger = 0 To numFiles - 1
+
+                    currFileSize = UIntFromBytes(bhdOffSet + &H4)
+                    currFileOffset = UIntFromBytes(bhdOffSet + &H8)
+                    currFileID = UIntFromBytes(bhdOffSet + &HC)
+
+                    ReDim currFileBytes(currFileSize - 1)
+
+                    BDTStream.Position = currFileOffset
+
+                    For k = 0 To currFileSize - 1
+                        currFileBytes(k) = BDTStream.ReadByte
+                    Next
+
+
+                    currFileName = StrFromBytes(UIntFromBytes(bhdOffSet + &H10))
+                    fileList += currFileID & "," & currFileName & Environment.NewLine
+
+                    currFileName = filepath & filename & "bhd" & ".extract" & currFileName
+                    currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
+
+                    If (Not System.IO.Directory.Exists(currFilePath)) Then
+                        System.IO.Directory.CreateDirectory(currFilePath)
+                    End If
+
+                    File.WriteAllBytes(currFileName, currFileBytes)
+
+                    bhdOffSet += &H18
+                Next
+                filename = filename & "bhd"
+                BDTStream.Close()
+                BDTStream.Dispose()
             Case "BND3"
                 Dim currFileSize As UInteger = 0
                 Dim currFileOffset As UInteger = 0
@@ -465,7 +527,79 @@ Public Class DesBNDBuild
 
                         txtInfo.Text += TimeOfDay & " - " & BDTFilename & " rebuilt." & Environment.NewLine
                 End Select
+            Case "BHF3"
+                BinderID = fileList(0).Split(",")(1)
+                flags = fileList(1)
+                numFiles = fileList.Length - 2
 
+                Dim currNameOffset As UInteger = 0
+
+                Dim BDTFilename As String
+                BDTFilename = Microsoft.VisualBasic.Left(txtBNDfile.Text, txtBNDfile.Text.Length - 3) & "bdt"
+
+                File.Delete(BDTFilename)
+
+                Dim BDTStream As New IO.FileStream(BDTFilename, IO.FileMode.CreateNew)
+
+                BDTStream.Position = 0
+                WriteBytes(BDTStream, Str2Bytes("BDF3" & BinderID))
+                BDTStream.Position = &H10
+
+                ReDim bytes(&H1F)
+
+                Dim bdtoffset As UInteger = &H10
+
+                StrToBytes("BHF3" & BinderID, 0)
+
+                UINTToBytes(flags, &HC)
+                UINTToBytes(numFiles, &H10)
+
+
+                ReDim Preserve bytes(&H1F + numFiles * &H18)
+                Dim idxOffset As UInteger
+                idxOffset = &H20
+
+
+                For i = 0 To numFiles - 1
+                    currFileID = fileList(i + 2).Split(",")(0)
+                    currFileName = fileList(i + 2).Split(",")(1)
+                    currnameoffset = bytes.Length
+
+                    Dim fStream As New IO.FileStream(filepath & filename & ".extract" & currFileName, IO.FileMode.Open)
+
+                    UINTToBytes(&H2000000, idxOffset + i * &H18)
+                    UINTToBytes(fStream.Length, idxOffset + &H4 + i * &H18)
+                    UINTToBytes(bdtoffset, idxOffset + &H8 + i * &H18)
+                    UINTToBytes(currFileID, idxOffset + &HC + i * &H18)
+                    UINTToBytes(currNameOffset, idxOffset + &H10 + i * &H18)
+                    UINTToBytes(fStream.Length, idxOffset + &H14 + i * &H18)
+
+                    ReDim Preserve bytes(bytes.Length + currFileName.Length)
+
+                    StrToBytes(currFileName, currNameOffset)
+
+                    For j = 0 To fStream.Length - 1
+                        BDTStream.WriteByte(fStream.ReadByte)
+                    Next
+
+                    bdtoffset = BDTStream.Position
+                    If bdtoffset Mod &H10 > 0 Then
+                        padding = &H10 - (bdtoffset Mod &H10)
+                    Else
+                        padding = 0
+                    End If
+                    bdtoffset += padding
+
+                    BDTStream.Position = bdtoffset
+
+                    fStream.Close()
+                    fStream.Dispose()
+                Next
+
+                BDTStream.Close()
+                BDTStream.Dispose()
+
+                txtInfo.Text += TimeOfDay & " - " & BDTFilename & " rebuilt." & Environment.NewLine
             Case "BND3"
                 ReDim bytes(&H1F)
                 StrToBytes(fileList(0), 0)
