@@ -269,7 +269,7 @@ Public Class DesBNDBuild
                     currFileName = StrFromBytes(UIntFromBytes(bhdOffSet + &H10))
                     fileList += currFileID & "," & currFileName & Environment.NewLine
 
-                    currFileName = filepath & filename & "bhd" & ".extract" & currFileName
+                    currFileName = filepath & filename & "bhd" & ".extract\" & currFileName
                     currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
 
                     If (Not System.IO.Directory.Exists(currFilePath)) Then
