@@ -318,6 +318,9 @@ Public Class DesBNDBuild
 
                 BinderID = Microsoft.VisualBasic.Left(StrFromBytes(&H0), 12)
                 flags = UIntFromBytes(&HC)
+
+                If flags = &H74000000 Then bigEndian = False
+
                 numFiles = UIntFromBytes(&H10)
                 namesEndLoc = UIntFromBytes(&H14)
 
@@ -325,6 +328,16 @@ Public Class DesBNDBuild
 
                 For i As UInteger = 0 To numFiles - 1
                     Select Case flags
+                        Case &H74000000
+                            currFileSize = UIntFromBytes(&H24 + i * &H18)
+                            currFileOffset = UIntFromBytes(&H28 + i * &H18)
+                            currFileID = UIntFromBytes(&H2C + i * &H18)
+                            currFileNameOffset = UIntFromBytes(&H30 + i * &H18)
+                            currFileName = StrFromBytes(currFileNameOffset)
+                            fileList += currFileID & "," & currFileName & Environment.NewLine
+                            currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
+                            currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
+                            currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
                         Case &H10100
                             currFileSize = UIntFromBytes(&H24 + i * &HC)
                             currFileOffset = UIntFromBytes(&H28 + i * &HC)
@@ -673,11 +686,15 @@ Public Class DesBNDBuild
                 flags = fileList(1)
                 numFiles = fileList.Length - 2
 
+
                 For i = 2 To fileList.Length - 1
                     namesEndLoc += fileList(i).Length - InStr(fileList(i), ",") + 1
                 Next
 
                 Select Case flags
+                    Case &H74000000
+                        currFileNameOffset = &H20 + &H18 * numFiles
+                        namesEndLoc += &H20 + &H18 * numFiles
                     Case &H10100
                         namesEndLoc = &H20 + &HC * numFiles
                     Case &HE010100
@@ -689,6 +706,8 @@ Public Class DesBNDBuild
                 End Select
 
                 UINTToBytes(flags, &HC)
+                If flags = &H74000000 Then bigEndian = False
+
                 UINTToBytes(numFiles, &H10)
                 UINTToBytes(namesEndLoc, &H14)
 
@@ -704,6 +723,39 @@ Public Class DesBNDBuild
 
                 For i As UInteger = 0 To numFiles - 1
                     Select Case flags
+                        Case &H74000000
+                            currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(fileList(i + 2), fileList(i + 2).Length - (InStr(fileList(i + 2), ",") + 3))
+                            tmpbytes = File.ReadAllBytes(currFileName)
+                            currFileID = Microsoft.VisualBasic.Left(fileList(i + 2), InStr(fileList(i + 2), ",") - 1)
+
+
+                            UINTToBytes(&H40, &H20 + i * &H18)
+                            UINTToBytes(tmpbytes.Length, &H24 + i * &H18)
+                            UINTToBytes(currFileOffset, &H28 + i * &H18)
+                            UINTToBytes(currFileID, &H2C + i * &H18)
+                            UINTToBytes(currFileNameOffset, &H30 + i * &H18)
+                            UINTToBytes(tmpbytes.Length, &H34 + i * &H18)
+
+                            If tmpbytes.Length Mod &H10 > 0 Then
+                                padding = &H10 - (tmpbytes.Length Mod &H10)
+                            Else
+                                padding = 0
+                            End If
+                            If i = numFiles - 1 Then padding = 0
+                            ReDim Preserve bytes(bytes.Length + tmpbytes.Length + padding - 1)
+
+                            InsBytes(tmpbytes, currFileOffset)
+
+                            currFileOffset += tmpbytes.Length
+                            If currFileOffset Mod &H10 > 0 Then
+                                padding = &H10 - (currFileOffset Mod &H10)
+                            Else
+                                padding = 0
+                            End If
+                            currFileOffset += padding
+
+                            StrToBytes(Microsoft.VisualBasic.Right(fileList(i + 2), fileList(i + 2).Length - (InStr(fileList(i + 2), ","))), currFileNameOffset)
+                            currFileNameOffset += Microsoft.VisualBasic.Right(fileList(i + 2), fileList(i + 2).Length - (InStr(fileList(i + 2), ","))).Length + 1
                         Case &H10100
                             currFileName = fileList(i + 2)
                             currFileName = filepath & filename & ".extract\" & currFileName
