@@ -28,6 +28,7 @@ Partial Class DesBNDBuild
         Me.btnRebuild = New System.Windows.Forms.Button()
         Me.btnExtract = New System.Windows.Forms.Button()
         Me.txtInfo = New System.Windows.Forms.TextBox()
+        Me.btnDonate = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'txtBNDfile
@@ -83,11 +84,21 @@ Partial Class DesBNDBuild
         Me.txtInfo.Size = New System.Drawing.Size(548, 142)
         Me.txtInfo.TabIndex = 31
         '
+        'btnDonate
+        '
+        Me.btnDonate.Location = New System.Drawing.Point(12, 32)
+        Me.btnDonate.Name = "btnDonate"
+        Me.btnDonate.Size = New System.Drawing.Size(26, 23)
+        Me.btnDonate.TabIndex = 32
+        Me.btnDonate.Text = "$"
+        Me.btnDonate.UseVisualStyleBackColor = True
+        '
         'DesBNDBuild
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(572, 216)
+        Me.Controls.Add(Me.btnDonate)
         Me.Controls.Add(Me.txtInfo)
         Me.Controls.Add(Me.btnRebuild)
         Me.Controls.Add(Me.btnExtract)
@@ -95,7 +106,7 @@ Partial Class DesBNDBuild
         Me.Controls.Add(Me.lblGAFile)
         Me.Controls.Add(Me.btnBrowse)
         Me.Name = "DesBNDBuild"
-        Me.Text = "Wulf's DeS BND Rebuilder 0.930"
+        Me.Text = "Wulf's DeS BND Rebuilder 0.935"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -106,5 +117,6 @@ Partial Class DesBNDBuild
     Friend WithEvents btnRebuild As System.Windows.Forms.Button
     Friend WithEvents btnExtract As System.Windows.Forms.Button
     Friend WithEvents txtInfo As System.Windows.Forms.TextBox
+    Friend WithEvents btnDonate As System.Windows.Forms.Button
 
 End Class

@@ -73,7 +73,7 @@ Public Class DesBNDBuild
     Private Sub btnBrowse_Click(sender As Object, e As EventArgs) Handles btnBrowse.Click
         Dim openDlg As New OpenFileDialog()
 
-        openDlg.Filter = "DeS DCX/BND File|*BND;*MOWB;*DCX;*TPF"
+        openDlg.Filter = "DeS DCX/BND File|*BND;*MOWB;*DCX;*TPF;*BHD5;*BHD"
         openDlg.Title = "Open your BND file"
 
         If openDlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -452,7 +452,7 @@ Public Class DesBNDBuild
                         Dim newbytes(UIntFromBytes(&H20) - 1) As Byte
                         Dim decbytes(UIntFromBytes(&H1C)) As Byte
 
-
+                        fileList = StrFromBytes(&H28) & Environment.NewLine & Microsoft.VisualBasic.Left(filename, filename.Length - &H4) & Environment.NewLine
 
                         Array.Copy(bytes, startOffset, newbytes, 0, newbytes.Length - 2)
 
@@ -999,6 +999,43 @@ Public Class DesBNDBuild
                 UINTToBytes(&H100000, &H6C)
 
                 Array.Copy(zipBytes, 0, bytes, &H70 + chunks * &H10, zipBytes.Length)
+            Case "DFLT"
+                Dim cmpBytes() As Byte
+                Dim zipBytes() As Byte = {}
+
+                currFileName = filepath + filename + ".extract\" + fileList(1)
+                tmpbytes = File.ReadAllBytes(currFileName)
+
+                currFileSize = tmpbytes.Length
+
+                ReDim bytes(&H4E)
+
+
+                cmpBytes = Compress(tmpbytes)
+
+                ReDim Preserve bytes(bytes.Length + cmpBytes.Length)
+
+                StrToBytes("DCX", &H0)
+                UINTToBytes(&H10000, &H4)
+                UINTToBytes(&H18, &H8)
+                UINTToBytes(&H24, &HC)
+                UINTToBytes(&H24, &H10)
+                UINTToBytes(&H2C, &H14)
+                StrToBytes("DCS", &H18)
+                UINTToBytes(currFileSize, &H1C)
+                UINTToBytes(cmpBytes.Length, &H20)
+                StrToBytes("DCP", &H24)
+                StrToBytes("DFLT", &H28)
+                UINTToBytes(&H20, &H2C)
+                UINTToBytes(&H9000000, &H30)
+
+                UINTToBytes(&H10100, &H40)
+                StrToBytes("DCA", &H44)
+                UINTToBytes(&H8, &H48)
+                UINTToBytes(&H78DA0000, &H4C)
+
+
+                Array.Copy(cmpBytes, 0, bytes, &H4E, cmpBytes.Length)
 
         End Select
         File.WriteAllBytes(filepath & filename, bytes)
@@ -1043,5 +1080,9 @@ Public Class DesBNDBuild
     End Sub
     Private Sub txt_DragEnter(sender As Object, e As System.Windows.Forms.DragEventArgs) Handles txtBNDfile.DragEnter
         e.Effect = DragDropEffects.Copy
+    End Sub
+
+    Private Sub btnDonate_Click(sender As Object, e As EventArgs) Handles btnDonate.Click
+        txtInfo.Text = "You are under no obligation to support the author by donating at http://www.paypal.me/wulf2k"
     End Sub
 End Class
