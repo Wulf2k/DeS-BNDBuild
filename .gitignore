@@ -76,3 +76,4 @@ DeSBNDBuild/obj/Debug/DeSBNDBuild.Resources.resources
 DeSBNDBuild/obj/Debug/DeSBNDBuild.xml
 DeSBNDBuild/obj/Debug/DesignTimeResolveAssemblyReferences.cache
 DeSBNDBuild/obj/Debug/TempPE/My Project.Resources.Designer.vb.dll
+*.suo
