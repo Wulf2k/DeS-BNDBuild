@@ -110,6 +110,8 @@ Public Class DesBNDBuild
     Private Sub btnExtract_Click(sender As Object, e As EventArgs) Handles btnExtract.Click
         bigEndian = True
 
+        Dim DCX As Boolean = False
+
         Dim currFileName As String = ""
         Dim currFilePath As String = ""
         Dim fileList As String = ""
@@ -416,6 +418,7 @@ Public Class DesBNDBuild
             Case "DCX"
                 Select Case StrFromBytes(&H28)
                     Case "EDGE"
+                        DCX = True
                         Dim newbytes(&H10000) As Byte
                         Dim decbytes(&H10000) As Byte
                         Dim bytes2(UIntFromBytes(&H1C) - 1) As Byte
@@ -438,7 +441,7 @@ Public Class DesBNDBuild
                             Array.Copy(decbytes, 0, bytes2, &H10000 * i, DecSize)
                         Next
 
-                        currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Left(filename, filename.Length - &H4)
+                        currFileName = filepath & Microsoft.VisualBasic.Left(filename, filename.Length - &H4)
                         currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
 
                         If (Not System.IO.Directory.Exists(currFilePath)) Then
@@ -447,6 +450,7 @@ Public Class DesBNDBuild
 
                         File.WriteAllBytes(currFileName, bytes2)
                     Case "DFLT"
+                        DCX = True
                         Dim startOffset As UInteger = UIntFromBytes(&H14) + &H22
 
                         Dim newbytes(UIntFromBytes(&H20) - 1) As Byte
@@ -461,7 +465,7 @@ Public Class DesBNDBuild
                         decbytes = Decompress(newbytes)
 
 
-                        currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Left(filename, filename.Length - &H4)
+                        currFileName = filepath & Microsoft.VisualBasic.Left(filename, filename.Length - &H4)
                         currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
 
                         If (Not System.IO.Directory.Exists(currFilePath)) Then
@@ -474,11 +478,18 @@ Public Class DesBNDBuild
                 
         End Select
 
-        File.WriteAllText(filepath & filename & ".extract\filelist.txt", fileList)
+        If Not DCX Then
+            File.WriteAllText(filepath & filename & ".extract\filelist.txt", fileList)
+        Else
+            File.WriteAllText(filepath & filename & ".info", fileList)
+        End If
+
         txtInfo.Text += TimeOfDay & " - " & filename & " extracted." & Environment.NewLine
     End Sub
     Private Sub btnRebuild_Click(sender As Object, e As EventArgs) Handles btnRebuild.Click
         bigEndian = True
+
+        Dim DCX As Boolean = False
 
         Dim currFileSize As UInteger = 0
         Dim currFileOffset As UInteger = 0
@@ -499,7 +510,14 @@ Public Class DesBNDBuild
         filepath = Microsoft.VisualBasic.Left(txtBNDfile.Text, InStrRev(txtBNDfile.Text, "\"))
         filename = Microsoft.VisualBasic.Right(txtBNDfile.Text, txtBNDfile.Text.Length - filepath.Length)
 
-        fileList = File.ReadAllLines(filepath & filename & ".extract\" & "fileList.txt")
+        DCX = (Microsoft.VisualBasic.Right(filename, 4).ToLower = ".dcx")
+
+        If Not DCX Then
+            fileList = File.ReadAllLines(filepath & filename & ".extract\" & "fileList.txt")
+        Else
+            fileList = File.ReadAllLines(filepath & filename & ".info")
+        End If
+
 
         Select Case Microsoft.VisualBasic.Left(fileList(0), 4)
             Case "BHD5"
@@ -919,7 +937,7 @@ Public Class DesBNDBuild
                 Dim cmpChunkBytes() As Byte
                 Dim zipBytes() As Byte = {}
 
-                currFileName = filepath + filename + ".extract\" + fileList(1)
+                currFileName = filepath + fileList(1)
                 tmpbytes = File.ReadAllBytes(currFileName)
 
                 currFileSize = tmpbytes.Length
@@ -1003,7 +1021,7 @@ Public Class DesBNDBuild
                 Dim cmpBytes() As Byte
                 Dim zipBytes() As Byte = {}
 
-                currFileName = filepath + filename + ".extract\" + fileList(1)
+                currFileName = filepath + fileList(1)
                 tmpbytes = File.ReadAllBytes(currFileName)
 
                 currFileSize = tmpbytes.Length

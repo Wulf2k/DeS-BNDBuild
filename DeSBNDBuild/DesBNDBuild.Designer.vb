@@ -106,7 +106,7 @@ Partial Class DesBNDBuild
         Me.Controls.Add(Me.lblGAFile)
         Me.Controls.Add(Me.btnBrowse)
         Me.Name = "DesBNDBuild"
-        Me.Text = "Wulf's DeS BND Rebuilder 0.935"
+        Me.Text = "Wulf's DeS BND Rebuilder - 2016-03-30-13"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
