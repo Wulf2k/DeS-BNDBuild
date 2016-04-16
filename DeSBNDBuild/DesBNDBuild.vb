@@ -481,7 +481,7 @@ Public Class DesBNDBuild
         If Not DCX Then
             File.WriteAllText(filepath & filename & ".extract\filelist.txt", fileList)
         Else
-            File.WriteAllText(filepath & filename & ".info", fileList)
+            File.WriteAllText(filepath & filename & ".info.txt", fileList)
         End If
 
         txtInfo.Text += TimeOfDay & " - " & filename & " extracted." & Environment.NewLine
@@ -515,7 +515,7 @@ Public Class DesBNDBuild
         If Not DCX Then
             fileList = File.ReadAllLines(filepath & filename & ".extract\" & "fileList.txt")
         Else
-            fileList = File.ReadAllLines(filepath & filename & ".info")
+            fileList = File.ReadAllLines(filepath & filename & ".info.txt")
         End If
 
 
@@ -1098,9 +1098,5 @@ Public Class DesBNDBuild
     End Sub
     Private Sub txt_DragEnter(sender As Object, e As System.Windows.Forms.DragEventArgs) Handles txtBNDfile.DragEnter
         e.Effect = DragDropEffects.Copy
-    End Sub
-
-    Private Sub btnDonate_Click(sender As Object, e As EventArgs) Handles btnDonate.Click
-        txtInfo.Text = "You are under no obligation to support the author by donating at http://www.paypal.me/wulf2k"
     End Sub
 End Class
