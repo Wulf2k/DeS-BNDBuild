@@ -31,9 +31,13 @@ $RECYCLE.BIN/
 # Thumbnails
 ._*
 
-# Files that might appear on external disk
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
 .Spotlight-V100
+.TemporaryItems
 .Trashes
+.VolumeIcon.icns
 
 # Directories potentially created on remote AFP share
 .AppleDB
@@ -42,37 +46,10 @@ Network Trash Folder
 Temporary Items
 .apdisk
 *.exe
-<<<<<<< HEAD
-=======
 *.pdb
-<<<<<<< HEAD
-*.pdb
-*.pdb
-=======
->>>>>>> origin/master
->>>>>>> origin/master
-*.pdb
-DeSBNDBuild/obj/Debug/DeSBNDBuild.pdb
-*.pdb
-*.pdb
-DeSBNDBuild/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-DeSBNDBuild/obj/Debug/DeSBNDBuild.vbproj.FileListAbsolute.txt
-DeSBNDBuild/bin/Debug/DeSBNDBuild.vshost.exe.config
-DeSBNDBuild/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-DeSBNDBuild/bin/Debug/DeSBNDBuild.xml
-DeSBNDBuild/bin/Debug/DeSBNDBuild.exe.config
-DeSBNDBuild/bin/Debug/DeSBNDBuild.vshost.exe.manifest
-DeSBNDBuild/obj/Debug/DeSBNDBuild.vbproj.FileListAbsolute.txt
-DeSBNDBuild/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-DeSBNDBuild/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-DeSBNDBuild/obj/Debug/DeSBNDBuild.vbproj.GenerateResource.Cache
-DeSBNDBuild/obj/Debug/DeSBNDBuild.vbproj.FileListAbsolute.txt
-DeSBNDBuild/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-DeSBNDBuild/obj/Debug/DeSBNDBuild.vbproj.GenerateResource.Cache
-DeSBNDBuild/obj/Debug/DeSBNDBuild.vbproj.FileListAbsolute.txt
-DeSBNDBuild/obj/Debug/DeSBNDBuild.pdb
-DeSBNDBuild/obj/Debug/DeSBNDBuild.DesBNDBuild.resources
-DeSBNDBuild/obj/Debug/DeSBNDBuild.Resources.resources
-DeSBNDBuild/obj/Debug/DeSBNDBuild.xml
-DeSBNDBuild/obj/Debug/DesignTimeResolveAssemblyReferences.cache
-DeSBNDBuild/obj/Debug/TempPE/My Project.Resources.Designer.vb.dll
+*.rar
+*.Cache
+*.dll
+*.suo
+**/bin
+**/obj
