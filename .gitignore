@@ -47,6 +47,18 @@ Temporary Items
 .apdisk
 *.exe
 *.pdb
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+*.pdb
+*.pdb
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master
+.apdisk
+*.exe
+*.pdb
+>>>>>>> origin/master
 *.rar
 *.Cache
 *.dll
