@@ -252,6 +252,12 @@ Public Class DesBNDBuild
             Case "BHF3"
                 fileList = "BHF3,"
 
+                If UIntFromBytes(&H10) = 0 Then
+                    bigEndian = True
+                Else
+                    bigEndian = False
+                End If
+
                 Dim currFileSize As UInteger = 0
                 Dim currFileOffset As UInteger = 0
                 Dim currFileID As UInteger = 0
