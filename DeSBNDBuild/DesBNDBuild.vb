@@ -327,16 +327,32 @@ Public Class DesBNDBuild
                 BinderID = Microsoft.VisualBasic.Left(StrFromBytes(&H0), 12)
                 flags = UIntFromBytes(&HC)
 
-                If flags = &H74000000 Then bigEndian = False
+                If flags = &H74000000 Or flags = &H54000000 Or flags = &H70000000 Then bigEndian = False
 
                 numFiles = UIntFromBytes(&H10)
                 namesEndLoc = UIntFromBytes(&H14)
 
                 fileList = BinderID & Environment.NewLine & flags & Environment.NewLine
 
+                If numFiles = 0 Then
+                    MsgBox("No files found in archive")
+                    Exit Sub
+                End If
+
+
                 For i As UInteger = 0 To numFiles - 1
                     Select Case flags
-                        Case &H74000000
+                        Case &H70000000
+                            currFileSize = UIntFromBytes(&H24 + i * &H14)
+                            currFileOffset = UIntFromBytes(&H28 + i * &H14)
+                            currFileID = UIntFromBytes(&H2C + i * &H14)
+                            currFileNameOffset = UIntFromBytes(&H30 + i * &H14)
+                            currFileName = StrFromBytes(currFileNameOffset)
+                            fileList += currFileID & "," & currFileName & Environment.NewLine
+                            currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
+                            currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
+                            currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
+                        Case &H74000000, &H54000000
                             currFileSize = UIntFromBytes(&H24 + i * &H18)
                             currFileOffset = UIntFromBytes(&H28 + i * &H18)
                             currFileID = UIntFromBytes(&H2C + i * &H18)
@@ -393,6 +409,12 @@ Public Class DesBNDBuild
                 Dim currFileBytes() As Byte = {}
                 Dim currFileFlags1 As UInteger = 0
                 Dim currFileFlags2 As UInteger = 0
+
+                If UIntFromBytes(&H8) = 0 Then
+                    bigEndian = True
+                Else
+                    bigEndian = False
+                End If
 
                 BinderID = Microsoft.VisualBasic.Left(StrFromBytes(&H0), 3)
                 numFiles = UIntFromBytes(&H8)
