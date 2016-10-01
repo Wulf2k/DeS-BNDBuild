@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class DeS_BNDBuild
+Partial Class Des_BNDBuild
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -29,13 +29,13 @@ Partial Class DeS_BNDBuild
         Me.btnExtract = New System.Windows.Forms.Button()
         Me.txtInfo = New System.Windows.Forms.TextBox()
         Me.lblVersion = New System.Windows.Forms.Label()
-        Me.SuspendLayout()
+        Me.SuspendLayout
         '
         'txtBNDfile
         '
-        Me.txtBNDfile.AllowDrop = True
-        Me.txtBNDfile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtBNDfile.AllowDrop = true
+        Me.txtBNDfile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.txtBNDfile.Location = New System.Drawing.Point(44, 6)
         Me.txtBNDfile.Name = "txtBNDfile"
         Me.txtBNDfile.Size = New System.Drawing.Size(440, 20)
@@ -43,7 +43,7 @@ Partial Class DeS_BNDBuild
         '
         'lblGAFile
         '
-        Me.lblGAFile.AutoSize = True
+        Me.lblGAFile.AutoSize = true
         Me.lblGAFile.Location = New System.Drawing.Point(12, 9)
         Me.lblGAFile.Name = "lblGAFile"
         Me.lblGAFile.Size = New System.Drawing.Size(26, 13)
@@ -52,41 +52,41 @@ Partial Class DeS_BNDBuild
         '
         'btnBrowse
         '
-        Me.btnBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnBrowse.Location = New System.Drawing.Point(487, 4)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(75, 23)
         Me.btnBrowse.TabIndex = 27
         Me.btnBrowse.Text = "Browse"
-        Me.btnBrowse.UseVisualStyleBackColor = True
+        Me.btnBrowse.UseVisualStyleBackColor = true
         '
         'btnRebuild
         '
-        Me.btnRebuild.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnRebuild.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnRebuild.Location = New System.Drawing.Point(487, 33)
         Me.btnRebuild.Name = "btnRebuild"
         Me.btnRebuild.Size = New System.Drawing.Size(75, 23)
         Me.btnRebuild.TabIndex = 30
         Me.btnRebuild.Text = "Rebuild"
-        Me.btnRebuild.UseVisualStyleBackColor = True
+        Me.btnRebuild.UseVisualStyleBackColor = true
         '
         'btnExtract
         '
-        Me.btnExtract.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnExtract.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnExtract.Location = New System.Drawing.Point(409, 33)
         Me.btnExtract.Name = "btnExtract"
         Me.btnExtract.Size = New System.Drawing.Size(75, 23)
         Me.btnExtract.TabIndex = 29
         Me.btnExtract.Text = "Extract"
-        Me.btnExtract.UseVisualStyleBackColor = True
+        Me.btnExtract.UseVisualStyleBackColor = true
         '
         'txtInfo
         '
-        Me.txtInfo.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtInfo.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.txtInfo.Location = New System.Drawing.Point(12, 62)
-        Me.txtInfo.Multiline = True
+        Me.txtInfo.Multiline = true
         Me.txtInfo.Name = "txtInfo"
         Me.txtInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.txtInfo.Size = New System.Drawing.Size(548, 142)
@@ -94,16 +94,16 @@ Partial Class DeS_BNDBuild
         '
         'lblVersion
         '
-        Me.lblVersion.AutoSize = True
+        Me.lblVersion.AutoSize = true
         Me.lblVersion.Location = New System.Drawing.Point(41, 38)
         Me.lblVersion.Name = "lblVersion"
         Me.lblVersion.Size = New System.Drawing.Size(76, 13)
         Me.lblVersion.TabIndex = 42
-        Me.lblVersion.Text = "2016-09-30-11"
+        Me.lblVersion.Text = "2016-10-01-15"
         '
-        'DesBNDBuild
+        'Des_BNDBuild
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(572, 216)
         Me.Controls.Add(Me.lblVersion)
@@ -113,14 +113,14 @@ Partial Class DeS_BNDBuild
         Me.Controls.Add(Me.txtBNDfile)
         Me.Controls.Add(Me.lblGAFile)
         Me.Controls.Add(Me.btnBrowse)
-        Me.DoubleBuffered = True
+        Me.DoubleBuffered = true
         Me.MinimumSize = New System.Drawing.Size(360, 180)
-        Me.Name = "DeS_BNDBuild"
+        Me.Name = "Des_BNDBuild"
         Me.Text = "Wulf's BND Rebuilder"
-        Me.ResumeLayout(False)
-        Me.PerformLayout()
+        Me.ResumeLayout(false)
+        Me.PerformLayout
 
-    End Sub
+End Sub
     Friend WithEvents txtBNDfile As System.Windows.Forms.TextBox
     Friend WithEvents lblGAFile As System.Windows.Forms.Label
     Friend WithEvents btnBrowse As System.Windows.Forms.Button
