@@ -1,7 +1,7 @@
 ﻿Imports System.IO
 Imports System.IO.Compression
 
-Public Class DesBNDBuild
+Public Class Des_BNDBuild
     Public Shared bytes() As Byte
     Public Shared filename As String
     Public Shared filepath As String
@@ -503,7 +503,7 @@ Public Class DesBNDBuild
                         File.WriteAllBytes(currFileName, decbytes)
 
                 End Select
-                
+
         End Select
 
         If Not DCX Then

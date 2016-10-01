@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class DesBNDBuild
+Partial Class DeS_BNDBuild
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -115,7 +115,7 @@ Partial Class DesBNDBuild
         Me.Controls.Add(Me.btnBrowse)
         Me.DoubleBuffered = True
         Me.MinimumSize = New System.Drawing.Size(360, 180)
-        Me.Name = "DesBNDBuild"
+        Me.Name = "DeS_BNDBuild"
         Me.Text = "Wulf's BND Rebuilder"
         Me.ResumeLayout(False)
         Me.PerformLayout()
