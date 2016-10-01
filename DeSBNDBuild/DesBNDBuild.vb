@@ -690,7 +690,7 @@ Public Class DesBNDBuild
                     currFileName = fileList(i + 2).Split(",")(1)
                     currNameOffset = bytes.Length
 
-                    Dim fStream As New IO.FileStream(filepath & filename & ".extract" & currFileName, IO.FileMode.Open)
+                    Dim fStream As New IO.FileStream(filepath & filename & ".extract\" & currFileName, IO.FileMode.Open)
 
                     UINTToBytes(&H2000000, idxOffset + i * &H18)
                     UINTToBytes(fStream.Length, idxOffset + &H4 + i * &H18)
