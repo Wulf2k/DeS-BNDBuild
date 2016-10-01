@@ -71,11 +71,9 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DesBNDBuild.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DesBNDBuild.Designer.vb">
-      <DependentUpon>DesBNDBuild.vb</DependentUpon>
+    <Compile Include="DeS-BNDBuild.vb" />
+    <Compile Include="DeS-BNDBuild.Designer.vb">
+      <DependentUpon>DeS-BNDBuild.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -95,8 +93,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DesBNDBuild.resx">
-      <DependentUpon>DesBNDBuild.vb</DependentUpon>
+    <EmbeddedResource Include="DeS-BNDBuild.resx">
+      <DependentUpon>DeS-BNDBuild.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

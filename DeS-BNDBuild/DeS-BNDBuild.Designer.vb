@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class DesBNDBuild
+Partial Class DeS_BNDBuild
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -34,6 +34,8 @@ Partial Class DesBNDBuild
         'txtBNDfile
         '
         Me.txtBNDfile.AllowDrop = True
+        Me.txtBNDfile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtBNDfile.Location = New System.Drawing.Point(44, 6)
         Me.txtBNDfile.Name = "txtBNDfile"
         Me.txtBNDfile.Size = New System.Drawing.Size(440, 20)
@@ -50,6 +52,7 @@ Partial Class DesBNDBuild
         '
         'btnBrowse
         '
+        Me.btnBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnBrowse.Location = New System.Drawing.Point(487, 4)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(75, 23)
@@ -59,6 +62,7 @@ Partial Class DesBNDBuild
         '
         'btnRebuild
         '
+        Me.btnRebuild.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnRebuild.Location = New System.Drawing.Point(487, 33)
         Me.btnRebuild.Name = "btnRebuild"
         Me.btnRebuild.Size = New System.Drawing.Size(75, 23)
@@ -68,6 +72,7 @@ Partial Class DesBNDBuild
         '
         'btnExtract
         '
+        Me.btnExtract.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnExtract.Location = New System.Drawing.Point(409, 33)
         Me.btnExtract.Name = "btnExtract"
         Me.btnExtract.Size = New System.Drawing.Size(75, 23)
@@ -77,6 +82,9 @@ Partial Class DesBNDBuild
         '
         'txtInfo
         '
+        Me.txtInfo.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtInfo.Location = New System.Drawing.Point(12, 62)
         Me.txtInfo.Multiline = True
         Me.txtInfo.Name = "txtInfo"
@@ -105,7 +113,9 @@ Partial Class DesBNDBuild
         Me.Controls.Add(Me.txtBNDfile)
         Me.Controls.Add(Me.lblGAFile)
         Me.Controls.Add(Me.btnBrowse)
-        Me.Name = "DesBNDBuild"
+        Me.DoubleBuffered = True
+        Me.MinimumSize = New System.Drawing.Size(360, 180)
+        Me.Name = "DeS_BNDBuild"
         Me.Text = "Wulf's BND Rebuilder"
         Me.ResumeLayout(False)
         Me.PerformLayout()
