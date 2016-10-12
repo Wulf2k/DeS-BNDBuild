@@ -402,6 +402,7 @@ Public Class Des_BNDBuild
                     File.WriteAllBytes(currFilePath & currFileName, currFileBytes)
                 Next
             Case "TPF"
+                'TODO:  Handle m10_9999 (PC) format
                 Dim currFileSize As UInteger = 0
                 Dim currFileOffset As UInteger = 0
                 Dim currFileID As UInteger = 0
@@ -895,6 +896,7 @@ Public Class Des_BNDBuild
                     End Select
                 Next
             Case "TPF"
+                'TODO:  Handle m10_9999 (PC) format
                 Dim currFileFlags1
                 Dim currFileFlags2
                 Dim totalFileSize = 0
