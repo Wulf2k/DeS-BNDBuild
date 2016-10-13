@@ -95,11 +95,11 @@ Partial Class Des_BNDBuild
         'lblVersion
         '
         Me.lblVersion.AutoSize = true
-        Me.lblVersion.Location = New System.Drawing.Point(41, 38)
+        Me.lblVersion.Location = New System.Drawing.Point(327, 38)
         Me.lblVersion.Name = "lblVersion"
         Me.lblVersion.Size = New System.Drawing.Size(76, 13)
         Me.lblVersion.TabIndex = 42
-        Me.lblVersion.Text = "2016-10-01-15"
+        Me.lblVersion.Text = "2016-10-13-01"
         '
         'Des_BNDBuild
         '

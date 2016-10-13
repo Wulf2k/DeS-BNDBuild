@@ -42,8 +42,11 @@ Public Class Des_BNDBuild
     End Function
 
     Private Sub StrToBytes(ByVal str As String, ByVal loc As UInteger)
-        Dim BArr() As Byte
-        BArr = System.Text.Encoding.ASCII.GetBytes(str)
+        Dim BArr(str.Length-1) As Byte
+        
+        For i = 0 To str.Length - 1
+            BArr(i) = ascw(str(i))
+        Next
 
         Array.Copy(BArr, 0, bytes, loc, BArr.Length)
     End Sub
@@ -772,6 +775,7 @@ Public Class Des_BNDBuild
                     Select Case flags
                         Case &H74000000
                             currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(fileList(i + 2), fileList(i + 2).Length - (InStr(fileList(i + 2), ",") + 3))
+
                             tmpbytes = File.ReadAllBytes(currFileName)
                             currFileID = Microsoft.VisualBasic.Left(fileList(i + 2), InStr(fileList(i + 2), ",") - 1)
 
