@@ -352,7 +352,8 @@ Public Class Des_BNDBuild
                             currFileNameOffset = UIntFromBytes(&H30 + i * &H14)
                             currFileName = StrFromBytes(currFileNameOffset)
                             fileList += currFileID & "," & currFileName & Environment.NewLine
-                            currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
+                            currFileName.Replace("N:\", "")
+                            currFileName = filepath & filename & ".extract\" & currFileName
                             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
                             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
                         Case &H74000000, &H54000000
@@ -362,7 +363,8 @@ Public Class Des_BNDBuild
                             currFileNameOffset = UIntFromBytes(&H30 + i * &H18)
                             currFileName = StrFromBytes(currFileNameOffset)
                             fileList += currFileID & "," & currFileName & Environment.NewLine
-                            currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
+                            currFileName.Replace("N:\", "")
+                            currFileName = filepath & filename & ".extract\" & currFileName
                             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
                             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
                         Case &H10100
@@ -371,6 +373,7 @@ Public Class Des_BNDBuild
                             currFileID = i
                             currFileName = i & "." & Microsoft.VisualBasic.Left(StrFromBytes(currFileOffset), 4)
                             fileList += currFileName & Environment.NewLine
+                            currFileName.Replace("N:\", "")
                             currFileName = filepath & filename & ".extract\" & currFileName
                             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
                             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
@@ -381,7 +384,8 @@ Public Class Des_BNDBuild
                             currFileNameOffset = UIntFromBytes(&H30 + i * &H14)
                             currFileName = StrFromBytes(currFileNameOffset)
                             fileList += currFileID & "," & currFileName & Environment.NewLine
-                            currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
+                            currFileName.Replace("N:\", "")
+                            currFileName = filepath & filename & ".extract\" & currFileName
                             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
                             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
                         Case &H2E010100
@@ -391,7 +395,8 @@ Public Class Des_BNDBuild
                             currFileNameOffset = UIntFromBytes(&H30 + i * &H18)
                             currFileName = StrFromBytes(currFileNameOffset)
                             fileList += currFileID & "," & currFileName & Environment.NewLine
-                            currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(currFileName, currFileName.Length - &H3)
+                            currFileName.Replace("N:\", "")
+                            currFileName = filepath & filename & ".extract\" & currFileName
                             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
                             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
                     End Select
