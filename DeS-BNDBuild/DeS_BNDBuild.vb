@@ -402,6 +402,7 @@ Public Class Des_BNDBuild
                     End Select
 
                     If (Not System.IO.Directory.Exists(currFilePath)) Then
+                        'TODO:  Check "N:\" replace logic, error extracting m10_02_00_00.luabnd
                         System.IO.Directory.CreateDirectory(currFilePath)
                     End If
 
