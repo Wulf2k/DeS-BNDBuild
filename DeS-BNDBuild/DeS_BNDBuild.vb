@@ -352,7 +352,7 @@ Public Class Des_BNDBuild
                             currFileNameOffset = UIntFromBytes(&H30 + i * &H14)
                             currFileName = StrFromBytes(currFileNameOffset)
                             fileList += currFileID & "," & currFileName & Environment.NewLine
-                            currFileName.Replace("N:\", "")
+                            currFileName = currFileName.Replace("N:\", "")
                             currFileName = filepath & filename & ".extract\" & currFileName
                             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
                             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
@@ -363,7 +363,7 @@ Public Class Des_BNDBuild
                             currFileNameOffset = UIntFromBytes(&H30 + i * &H18)
                             currFileName = StrFromBytes(currFileNameOffset)
                             fileList += currFileID & "," & currFileName & Environment.NewLine
-                            currFileName.Replace("N:\", "")
+                            currFileName = currFileName.Replace("N:\", "")
                             currFileName = filepath & filename & ".extract\" & currFileName
                             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
                             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
@@ -373,7 +373,7 @@ Public Class Des_BNDBuild
                             currFileID = i
                             currFileName = i & "." & Microsoft.VisualBasic.Left(StrFromBytes(currFileOffset), 4)
                             fileList += currFileName & Environment.NewLine
-                            currFileName.Replace("N:\", "")
+                            currFileName = currFileName.Replace("N:\", "")
                             currFileName = filepath & filename & ".extract\" & currFileName
                             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
                             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
@@ -384,7 +384,7 @@ Public Class Des_BNDBuild
                             currFileNameOffset = UIntFromBytes(&H30 + i * &H14)
                             currFileName = StrFromBytes(currFileNameOffset)
                             fileList += currFileID & "," & currFileName & Environment.NewLine
-                            currFileName.Replace("N:\", "")
+                            currFileName = currFileName.Replace("N:\", "")
                             currFileName = filepath & filename & ".extract\" & currFileName
                             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
                             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
@@ -395,14 +395,13 @@ Public Class Des_BNDBuild
                             currFileNameOffset = UIntFromBytes(&H30 + i * &H18)
                             currFileName = StrFromBytes(currFileNameOffset)
                             fileList += currFileID & "," & currFileName & Environment.NewLine
-                            currFileName.Replace("N:\", "")
+                            currFileName = currFileName.Replace("N:\", "")
                             currFileName = filepath & filename & ".extract\" & currFileName
                             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
                             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
                     End Select
-
+                    
                     If (Not System.IO.Directory.Exists(currFilePath)) Then
-                        'TODO:  Check "N:\" replace logic, error extracting m10_02_00_00.luabnd
                         System.IO.Directory.CreateDirectory(currFilePath)
                     End If
 

@@ -94,12 +94,13 @@ Partial Class Des_BNDBuild
         '
         'lblVersion
         '
+        Me.lblVersion.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.lblVersion.AutoSize = true
         Me.lblVersion.Location = New System.Drawing.Point(327, 38)
         Me.lblVersion.Name = "lblVersion"
         Me.lblVersion.Size = New System.Drawing.Size(76, 13)
         Me.lblVersion.TabIndex = 42
-        Me.lblVersion.Text = "2016-10-14-12"
+        Me.lblVersion.Text = "2016-10-17-22"
         '
         'Des_BNDBuild
         '
