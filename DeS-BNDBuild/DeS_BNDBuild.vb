@@ -353,6 +353,7 @@ Public Class Des_BNDBuild
                             currFileName = StrFromBytes(currFileNameOffset)
                             fileList += currFileID & "," & currFileName & Environment.NewLine
                             currFileName = currFileName.Replace("N:\", "")
+                            currFileName = currFileName.Replace("n:\", "")
                             currFileName = filepath & filename & ".extract\" & currFileName
                             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
                             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
@@ -364,6 +365,7 @@ Public Class Des_BNDBuild
                             currFileName = StrFromBytes(currFileNameOffset)
                             fileList += currFileID & "," & currFileName & Environment.NewLine
                             currFileName = currFileName.Replace("N:\", "")
+                            currFileName = currFileName.Replace("n:\", "")
                             currFileName = filepath & filename & ".extract\" & currFileName
                             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
                             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
@@ -374,6 +376,7 @@ Public Class Des_BNDBuild
                             currFileName = i & "." & Microsoft.VisualBasic.Left(StrFromBytes(currFileOffset), 4)
                             fileList += currFileName & Environment.NewLine
                             currFileName = currFileName.Replace("N:\", "")
+                            currFileName = currFileName.Replace("n:\", "")
                             currFileName = filepath & filename & ".extract\" & currFileName
                             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
                             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
@@ -385,6 +388,7 @@ Public Class Des_BNDBuild
                             currFileName = StrFromBytes(currFileNameOffset)
                             fileList += currFileID & "," & currFileName & Environment.NewLine
                             currFileName = currFileName.Replace("N:\", "")
+                            currFileName = currFileName.Replace("n:\", "")
                             currFileName = filepath & filename & ".extract\" & currFileName
                             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
                             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
@@ -396,6 +400,7 @@ Public Class Des_BNDBuild
                             currFileName = StrFromBytes(currFileNameOffset)
                             fileList += currFileID & "," & currFileName & Environment.NewLine
                             currFileName = currFileName.Replace("N:\", "")
+                            currFileName = currFileName.Replace("n:\", "")
                             currFileName = filepath & filename & ".extract\" & currFileName
                             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
                             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
