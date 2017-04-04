@@ -2411,6 +2411,10 @@
 /script/talk/m17_00_00_00.talkesdbnd.dcx
 /script/talk/m18_00_00_00.talkesdbnd.dcx
 /script/talk/m18_01_00_00.talkesdbnd.dcx
+/sfx/FRPG_SfxBnd_c3471.ffxbnd.dcx
+/sfx/FRPG_SfxBnd_c4100.ffxbnd.dcx
+/sfx/FRPG_SfxBnd_c4500.ffxbnd.dcx
+/sfx/FRPG_SfxBnd_c4510.ffxbnd.dcx
 /sfx/FRPG_SfxBnd_CommonEffects.ffxbnd.dcx
 /sfx/FRPG_SfxBnd_m10.ffxbnd.dcx
 /sfx/FRPG_SfxBnd_m10_00.ffxbnd.dcx
