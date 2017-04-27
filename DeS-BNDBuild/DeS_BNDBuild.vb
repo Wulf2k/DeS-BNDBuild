@@ -27,16 +27,14 @@ Public Class Des_BNDBuild
     End Function
     Private Function UIntFromBytes(ByVal loc As UInteger) As UInteger
         Dim tmpUint As UInteger = 0
+        Dim bArr(3) As Byte
 
+        Array.Copy(bytes, loc, bArr, 0, 4)
         If bigEndian Then
-            For i = 0 To 3
-                tmpUint += Convert.ToUInt32(bytes(loc + i)) * &H100 ^ (3 - i)
-            Next
-        Else
-            For i = 0 To 3
-                tmpUint += Convert.ToUInt32(bytes(loc + 3 - i)) * &H100 ^ (3 - i)
-            Next
+            Array.Reverse(bArr)
         End If
+
+        tmpUint = BitConverter.ToUInt32(bArr, 0)
 
         Return tmpUint
     End Function
@@ -58,18 +56,15 @@ Public Class Des_BNDBuild
     Private Sub InsBytes(ByVal bytes2() As Byte, ByVal loc As UInteger)
         Array.Copy(bytes2, 0, bytes, loc, bytes2.Length)
     End Sub
-    Private Sub UINTToBytes(ByVal val As UInteger, loc As UInteger)
-        Dim BArr(3) As Byte
+    Private Sub UIntToBytes(ByVal val As UInteger, loc As UInteger)
 
+        Dim bArr(3) As Byte
+
+        bArr = BitConverter.GetBytes(val)
         If bigEndian Then
-            For i = 0 To 3
-                BArr(i) = Math.Floor(val / (&H100 ^ (3 - i))) Mod &H100
-            Next
-        Else
-            For i = 0 To 3
-                BArr(3 - i) = Math.Floor(val / (&H100 ^ (3 - i))) Mod &H100
-            Next
+            Array.Reverse(bArr)
         End If
+
         Array.Copy(BArr, 0, bytes, loc, 4)
     End Sub
 
