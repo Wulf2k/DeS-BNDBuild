@@ -40,19 +40,18 @@ Public Class Des_BNDBuild
     End Function
 
     Private Sub StrToBytes(ByVal str As String, ByVal loc As UInteger)
-        Dim BArr(str.Length-1) As Byte
-        
-        For i = 0 To str.Length - 1
-            BArr(i) = ascw(str(i))
-        Next
+        'Insert string directly to main byte array
+        Dim BArr() As Byte
+
+        BArr = System.Text.Encoding.ASCII.GetBytes(str)
 
         Array.Copy(BArr, 0, bytes, loc, BArr.Length)
     End Sub
-    Private Function Str2Bytes(ByVal str As String) As Byte()
-        Dim BArr() As Byte
-        BArr = System.Text.Encoding.ASCII.GetBytes(str)
-        Return BArr
+    Private Function StrToBytes(ByVal str As String) As Byte()
+        'Return bytes of string, do not insert
+        Return System.Text.Encoding.ASCII.GetBytes(str)
     End Function
+
     Private Sub InsBytes(ByVal bytes2() As Byte, ByVal loc As UInteger)
         Array.Copy(bytes2, 0, bytes, loc, bytes2.Length)
     End Sub
@@ -99,6 +98,7 @@ Public Class Des_BNDBuild
         Return hash
     End Function
     Private Sub WriteBytes(ByRef fs As FileStream, ByVal byt() As Byte)
+        'Write to stream at present location
         For i = 0 To byt.Length - 1
             fs.WriteByte(byt(i))
         Next
@@ -577,7 +577,7 @@ Public Class Des_BNDBuild
                 Dim BDTStream As New IO.FileStream(BDTFilename, IO.FileMode.CreateNew)
 
                 BDTStream.Position = 0
-                WriteBytes(BDTStream, Str2Bytes(BinderID))
+                WriteBytes(BDTStream, StrToBytes(BinderID))
                 BDTStream.Position = &H10
 
                 ReDim bytes(&H17)
@@ -676,7 +676,7 @@ Public Class Des_BNDBuild
                 Dim BDTStream As New IO.FileStream(BDTFilename, IO.FileMode.CreateNew)
 
                 BDTStream.Position = 0
-                WriteBytes(BDTStream, Str2Bytes("BDF3" & BinderID))
+                WriteBytes(BDTStream, StrToBytes("BDF3" & BinderID))
                 BDTStream.Position = &H10
 
                 ReDim bytes(&H1F)
