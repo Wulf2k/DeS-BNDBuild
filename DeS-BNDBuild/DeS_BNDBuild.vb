@@ -1,5 +1,8 @@
 ﻿Imports System.IO
 Imports System.IO.Compression
+Imports System.Threading
+
+
 
 Public Class Des_BNDBuild
     Public Shared bytes() As Byte
@@ -9,6 +12,23 @@ Public Class Des_BNDBuild
 
     Public Shared bigEndian As Boolean = True
 
+    Private trdExtract As Thread
+
+    Dim outputLock As New Object
+    Dim workLock As New Object
+
+    Public Shared work As Boolean = False
+    Public Shared outputList As New List(Of String)
+
+    Private WithEvents updateUITimer As New System.Windows.Forms.Timer()
+
+
+
+    Public Sub output(txt As String)
+        SyncLock outputLock
+            outputList.Add(txt)
+        End SyncLock
+    End Sub
 
     Private Function StrFromBytes(ByVal loc As UInteger) As String
         Dim Str As String = ""
@@ -106,8 +126,17 @@ Public Class Des_BNDBuild
 
 
     Private Sub btnExtract_Click(sender As Object, e As EventArgs) Handles btnExtract.Click
-        bigEndian = True
+        trdExtract = New Thread(AddressOf extract)
+        trdExtract.IsBackground = True
+        trdExtract.Start()
+    End Sub
+    Private Sub extract()
+        SyncLock workLock
+            work = True
+        End SyncLock
 
+
+        bigEndian = True
         Dim DCX As Boolean = False
 
         Dim currFileName As String = ""
@@ -127,10 +156,14 @@ Public Class Des_BNDBuild
         If Not File.Exists(filepath & filename & ".bak") Then
             bytes = File.ReadAllBytes(filepath & filename)
             File.WriteAllBytes(filepath & filename & ".bak", bytes)
-            txtInfo.Text += TimeOfDay & " - " & filename & ".bak created." & Environment.NewLine
+            'txtInfo.Text += TimeOfDay & " - " & filename & ".bak created." & Environment.NewLine
+            output(TimeOfDay & " - " & filename & ".bak created." & Environment.NewLine)
         Else
-            txtInfo.Text += TimeOfDay & " - " & filename & ".bak already exists." & Environment.NewLine
+            'txtInfo.Text += TimeOfDay & " - " & filename & ".bak already exists." & Environment.NewLine
+            output(TimeOfDay & " - " & filename & ".bak already exists." & Environment.NewLine)
         End If
+
+        output(TimeOfDay & " - Beginning extraction." & Environment.NewLine)
 
         Select Case Microsoft.VisualBasic.Left(StrFromBytes(0), 4)
             Case "BHD5"
@@ -165,9 +198,11 @@ Public Class Des_BNDBuild
 
                 If Not File.Exists(filepath & filename & ".bdt.bak") Then
                     File.Copy(filepath & filename & ".bdt", filepath & filename & ".bdt.bak")
-                    txtInfo.Text += TimeOfDay & " - " & filename & ".bdt.bak created." & Environment.NewLine
+                    'txtInfo.Text += TimeOfDay & " - " & filename & ".bdt.bak created." & Environment.NewLine
+                    'output(TimeOfDay & " - " & filename & ".bdt.bak created." & Environment.NewLine)
                 Else
-                    txtInfo.Text += TimeOfDay & " - " & filename & ".bdt.bak already exists." & Environment.NewLine
+                    'txtInfo.Text += TimeOfDay & " - " & filename & ".bdt.bak already exists." & Environment.NewLine
+                    'output(TimeOfDay & " - " & filename & ".bdt.bak already exists." & Environment.NewLine)
                 End If
 
                 Dim BDTStream As New IO.FileStream(filepath & filename & ".bdt", IO.FileMode.Open)
@@ -236,7 +271,9 @@ Public Class Des_BNDBuild
                             System.IO.Directory.CreateDirectory(currFilePath)
                         End If
 
+
                         File.WriteAllBytes(currFileName, currFileBytes)
+                        output(TimeOfDay & " - Extracted " & currFileName & Environment.NewLine)
 
                         bhdOffSet += &H10
                     Next
@@ -271,9 +308,11 @@ Public Class Des_BNDBuild
 
                 If Not File.Exists(filepath & filename & "bdt.bak") Then
                     File.Copy(filepath & filename & "bdt", filepath & filename & "bdt.bak")
-                    txtInfo.Text += TimeOfDay & " - " & filename & ".bdt.bak created." & Environment.NewLine
+                    'txtInfo.Text += TimeOfDay & " - " & filename & ".bdt.bak created." & Environment.NewLine
+                    'output(TimeOfDay & " - " & filename & ".bdt.bak created." & Environment.NewLine)
                 Else
-                    txtInfo.Text += TimeOfDay & " - " & filename & ".bdt.bak already exists." & Environment.NewLine
+                    'txtInfo.Text += TimeOfDay & " - " & filename & ".bdt.bak already exists." & Environment.NewLine
+                    'output(TimeOfDay & " - " & filename & ".bdt.bak already exists." & Environment.NewLine)
                 End If
 
                 Dim BDTStream As New IO.FileStream(filepath & filename & "bdt", IO.FileMode.Open)
@@ -400,7 +439,7 @@ Public Class Des_BNDBuild
                             currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
                             currFileName = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - currFilePath.Length)
                     End Select
-                    
+
                     If (Not System.IO.Directory.Exists(currFilePath)) Then
                         System.IO.Directory.CreateDirectory(currFilePath)
                     End If
@@ -521,7 +560,13 @@ Public Class Des_BNDBuild
             File.WriteAllText(filepath & filename & ".info.txt", fileList)
         End If
 
-        txtInfo.Text += TimeOfDay & " - " & filename & " extracted." & Environment.NewLine
+        output(TimeOfDay & " - " & filename & " extracted." & Environment.NewLine)
+
+
+        SyncLock workLock
+            work = False
+        End SyncLock
+        'txtInfo.Text += TimeOfDay & " - " & filename & " extracted." & Environment.NewLine
     End Sub
     Private Sub btnRebuild_Click(sender As Object, e As EventArgs) Handles btnRebuild.Click
         bigEndian = True
@@ -1137,5 +1182,38 @@ Public Class Des_BNDBuild
     End Sub
     Private Sub txt_DragEnter(sender As Object, e As System.Windows.Forms.DragEventArgs) Handles txtBNDfile.DragEnter
         e.Effect = DragDropEffects.Copy
+    End Sub
+
+    Private Sub Des_BNDBuild_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        updateUITimer.Interval = 200
+        updateUITimer.Start()
+    End Sub
+
+    Private Sub updateUI() Handles updateUITimer.Tick
+        SyncLock workLock
+            If work Then
+                btnExtract.Enabled = False
+                btnRebuild.Enabled = False
+            Else
+                btnExtract.Enabled = True
+                btnRebuild.Enabled = True
+            End If
+        End SyncLock
+
+        SyncLock outputLock
+            While outputList.Count > 0
+                txtInfo.AppendText(outputList(0))
+                outputList.RemoveAt(0)
+            End While
+        End SyncLock
+
+
+        If txtInfo.Lines.Count > 10000 Then
+            Dim newList As List(Of String) = txtInfo.Lines.ToList
+            While newList.Count > 1000
+                newList.RemoveAt(0)
+            End While
+            txtInfo.Lines = newList.ToArray
+        End If
     End Sub
 End Class

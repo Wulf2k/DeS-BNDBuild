@@ -38,12 +38,12 @@ Partial Class Des_BNDBuild
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.txtBNDfile.Location = New System.Drawing.Point(44, 6)
         Me.txtBNDfile.Name = "txtBNDfile"
-        Me.txtBNDfile.Size = New System.Drawing.Size(440, 20)
+        Me.txtBNDfile.Size = New System.Drawing.Size(635, 20)
         Me.txtBNDfile.TabIndex = 26
         '
         'lblGAFile
         '
-        Me.lblGAFile.AutoSize = true
+        Me.lblGAFile.AutoSize = True
         Me.lblGAFile.Location = New System.Drawing.Point(12, 9)
         Me.lblGAFile.Name = "lblGAFile"
         Me.lblGAFile.Size = New System.Drawing.Size(26, 13)
@@ -52,61 +52,61 @@ Partial Class Des_BNDBuild
         '
         'btnBrowse
         '
-        Me.btnBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnBrowse.Location = New System.Drawing.Point(487, 4)
+        Me.btnBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnBrowse.Location = New System.Drawing.Point(682, 4)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(75, 23)
         Me.btnBrowse.TabIndex = 27
         Me.btnBrowse.Text = "Browse"
-        Me.btnBrowse.UseVisualStyleBackColor = true
+        Me.btnBrowse.UseVisualStyleBackColor = True
         '
         'btnRebuild
         '
-        Me.btnRebuild.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnRebuild.Location = New System.Drawing.Point(487, 33)
+        Me.btnRebuild.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnRebuild.Location = New System.Drawing.Point(682, 33)
         Me.btnRebuild.Name = "btnRebuild"
         Me.btnRebuild.Size = New System.Drawing.Size(75, 23)
         Me.btnRebuild.TabIndex = 30
         Me.btnRebuild.Text = "Rebuild"
-        Me.btnRebuild.UseVisualStyleBackColor = true
+        Me.btnRebuild.UseVisualStyleBackColor = True
         '
         'btnExtract
         '
-        Me.btnExtract.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnExtract.Location = New System.Drawing.Point(409, 33)
+        Me.btnExtract.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnExtract.Location = New System.Drawing.Point(604, 33)
         Me.btnExtract.Name = "btnExtract"
         Me.btnExtract.Size = New System.Drawing.Size(75, 23)
         Me.btnExtract.TabIndex = 29
         Me.btnExtract.Text = "Extract"
-        Me.btnExtract.UseVisualStyleBackColor = true
+        Me.btnExtract.UseVisualStyleBackColor = True
         '
         'txtInfo
         '
-        Me.txtInfo.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtInfo.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtInfo.Location = New System.Drawing.Point(12, 62)
-        Me.txtInfo.Multiline = true
+        Me.txtInfo.Multiline = True
         Me.txtInfo.Name = "txtInfo"
         Me.txtInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtInfo.Size = New System.Drawing.Size(548, 142)
+        Me.txtInfo.Size = New System.Drawing.Size(743, 142)
         Me.txtInfo.TabIndex = 31
         '
         'lblVersion
         '
-        Me.lblVersion.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblVersion.AutoSize = true
-        Me.lblVersion.Location = New System.Drawing.Point(327, 38)
+        Me.lblVersion.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblVersion.AutoSize = True
+        Me.lblVersion.Location = New System.Drawing.Point(522, 38)
         Me.lblVersion.Name = "lblVersion"
         Me.lblVersion.Size = New System.Drawing.Size(76, 13)
         Me.lblVersion.TabIndex = 42
-        Me.lblVersion.Text = "2017-04-27-10"
+        Me.lblVersion.Text = "2017-05-11-12"
         '
         'Des_BNDBuild
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(572, 216)
+        Me.ClientSize = New System.Drawing.Size(767, 216)
         Me.Controls.Add(Me.lblVersion)
         Me.Controls.Add(Me.txtInfo)
         Me.Controls.Add(Me.btnRebuild)
