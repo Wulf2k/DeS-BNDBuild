@@ -1132,7 +1132,7 @@ Public Class Des_BNDBuild
                 UINTToBytes(&H2C, &H14)
                 StrToBytes("DCS", &H18)
                 UINTToBytes(currFileSize, &H1C)
-                UINTToBytes(cmpBytes.Length + 2, &H20)
+                UINTToBytes(cmpBytes.Length + 4, &H20)
                 StrToBytes("DCP", &H24)
                 StrToBytes("DFLT", &H28)
                 UINTToBytes(&H20, &H2C)
