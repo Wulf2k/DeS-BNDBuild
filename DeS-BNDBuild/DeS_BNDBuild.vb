@@ -799,7 +799,7 @@ Public Class Des_BNDBuild
                 Next
 
                 Select Case flags
-                    Case &H74000000
+                    Case &H74000000, &H54000000
                         currFileNameOffset = &H20 + &H18 * numFiles
                         namesEndLoc += &H20 + &H18 * numFiles
                     Case &H10100
@@ -813,9 +813,9 @@ Public Class Des_BNDBuild
                 End Select
 
                 UINTToBytes(flags, &HC)
-                If flags = &H74000000 Then bigEndian = False
+                If flags = &H74000000 Or flags = &H54000000 Then bigEndian = False
 
-                UINTToBytes(numFiles, &H10)
+                UIntToBytes(numFiles, &H10)
                 UINTToBytes(namesEndLoc, &H14)
 
                 If namesEndLoc Mod &H10 > 0 Then
@@ -830,8 +830,11 @@ Public Class Des_BNDBuild
 
                 For i As UInteger = 0 To numFiles - 1
                     Select Case flags
-                        Case &H74000000
-                            currFileName = filepath & filename & ".extract\" & Microsoft.VisualBasic.Right(fileList(i + 2), fileList(i + 2).Length - (InStr(fileList(i + 2), ",") + 3))
+                        Case &H74000000, &H54000000
+                            currFileName = Microsoft.VisualBasic.Right(fileList(i + 2), fileList(i + 2).Length - (InStr(fileList(i + 2), ",")))
+                            currFileName = currFileName.Replace("N:\", "")
+                            currFileName = currFileName.Replace("n:\", "")
+                            currFileName = filepath & filename & ".extract\" & currFileName
 
                             tmpbytes = File.ReadAllBytes(currFileName)
                             currFileID = Microsoft.VisualBasic.Left(fileList(i + 2), InStr(fileList(i + 2), ",") - 1)
