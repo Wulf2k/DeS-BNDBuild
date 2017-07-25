@@ -140,6 +140,18 @@ Public Class Des_BNDBuild
 
 
 
+            'TODO:  Confirm endian correctness for all DeS/DaS PC/PS3 formats
+            'TODO:  Bitch about the massive job that is the above
+
+            'TODO:  Do it anyway.
+
+            'TODO:  In the endian checks, look into why you check if it equals 0
+            '       Since that can't matter, since a non-zero value will still
+            '       be non-zero in either endian.
+
+            '       Seriously, what the hell were you thinking?
+
+
             bigEndian = True
             Dim DCX As Boolean = False
 
@@ -359,6 +371,7 @@ Public Class Des_BNDBuild
                     BDTStream.Close()
                     BDTStream.Dispose()
                 Case "BND3"
+                    'TODO:  DeS, c0300.anibnd, no files found?
                     Dim currFileSize As UInteger = 0
                     Dim currFileOffset As UInteger = 0
                     Dim currFileID As UInteger = 0
@@ -462,7 +475,8 @@ Public Class Des_BNDBuild
                     Dim currFileFlags1 As UInteger = 0
                     Dim currFileFlags2 As UInteger = 0
 
-                    If UIntFromBytes(&H8) = 0 Then
+                    bigEndian = False
+                    If UIntFromBytes(&H8) >= &H1000000 Then
                         bigEndian = True
                     Else
                         bigEndian = False
