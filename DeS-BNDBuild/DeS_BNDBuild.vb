@@ -486,7 +486,7 @@ Public Class Des_BNDBuild
 
                     flags = UIntFromBytes(&HC)
 
-                    If flags = &H2010200 Then
+                    If flags = &H2010200 Or flags = &H2010000 Then
                         ' Demon's Souls
 
                         BinderID = Microsoft.VisualBasic.Left(StrFromBytes(&H0), 3)
