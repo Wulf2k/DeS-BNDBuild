@@ -390,6 +390,9 @@ Public Class Des_BNDBuild
 
                     If numFiles = 0 Then
                         MsgBox("No files found in archive")
+                        SyncLock workLock
+                            work = False
+                        End SyncLock
                         Exit Sub
                     End If
 
