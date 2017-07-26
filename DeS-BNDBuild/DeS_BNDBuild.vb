@@ -630,6 +630,15 @@ Public Class Des_BNDBuild
     End Sub
     Private Sub btnRebuild_Click(sender As Object, e As EventArgs) Handles btnRebuild.Click
         'TODO:  Confirm endian before each rebuild.
+
+        'TODO:  List of non-DCXs that don't rebuild byte-perfect
+        '   DeS, facegen.tpf
+        '   DeS, i7006.tpf
+        '   DeS, m07_9990.tpf
+        '   DaS, m10_9999.tpf
+
+
+
         bigEndian = True
 
         Dim DCX As Boolean = False
@@ -1023,9 +1032,9 @@ Public Class Des_BNDBuild
 
                 flags = fileList(1)
 
-                If flags = &H2010200 Then
+                If flags = &H2010200 Or flags = &H201000 Then
                     ' Demon's Souls
-
+                    'TODO:  Differentiate flag format differences
 
                     bigEndian = True
 
@@ -1037,19 +1046,19 @@ Public Class Des_BNDBuild
                         namesEndLoc += fileList(i).Length - InStrRev(fileList(i), ",") + 1
                     Next
 
-	                UINTToBytes(numFiles, &H8)
-	                UINTToBytes(flags, &HC)
+                    UIntToBytes(numFiles, &H8)
+                    UIntToBytes(flags, &HC)
 
-	                If namesEndLoc Mod &H10 > 0 Then
-	                    padding = &H10 - (namesEndLoc Mod &H10)
-	                Else
-	                    padding = 0
-	                End If
+                    If namesEndLoc Mod &H10 > 0 Then
+                        padding = &H10 - (namesEndLoc Mod &H10)
+                    Else
+                        padding = 0
+                    End If
 
-	                ReDim Preserve bytes(namesEndLoc + padding - 1)
-	                currFileOffset = namesEndLoc + padding
+                    ReDim Preserve bytes(namesEndLoc + padding - 1)
+                    currFileOffset = namesEndLoc + padding
 
-	                UINTToBytes(currFileOffset, &H10)
+                    UIntToBytes(currFileOffset, &H10)
 
                     currFileNameOffset = &H10 + &H20 * numFiles
 
@@ -1067,11 +1076,11 @@ Public Class Des_BNDBuild
                         currFileFlags1 = Microsoft.VisualBasic.Left(fileList(i + 2), InStr(fileList(i + 2), ",") - 1)
                         currFileFlags2 = Microsoft.VisualBasic.Right(Microsoft.VisualBasic.Left(fileList(i + 2), InStrRev(fileList(i + 2), ",") - 1), Microsoft.VisualBasic.Left(fileList(i + 2), InStrRev(fileList(i + 2), ",") - 1).Length - InStr(Microsoft.VisualBasic.Left(fileList(i + 2), InStrRev(fileList(i + 2), ",") - 1), ","))
 
-	                    UINTToBytes(currFileOffset, &H10 + i * &H20)
-	                    UINTToBytes(currFileSize, &H14 + i * &H20)
-	                    UINTToBytes(currFileFlags1, &H18 + i * &H20)
-	                    UINTToBytes(currFileFlags2, &H1C + i * &H20)
-	                    UINTToBytes(currFileNameOffset, &H28 + i * &H20)
+                        UIntToBytes(currFileOffset, &H10 + i * &H20)
+                        UIntToBytes(currFileSize, &H14 + i * &H20)
+                        UIntToBytes(currFileFlags1, &H18 + i * &H20)
+                        UIntToBytes(currFileFlags2, &H1C + i * &H20)
+                        UIntToBytes(currFileNameOffset, &H28 + i * &H20)
 
                         ReDim Preserve bytes(bytes.Length + currFileSize + padding - 1)
 
