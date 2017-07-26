@@ -626,6 +626,7 @@ Public Class Des_BNDBuild
         'txtInfo.Text += TimeOfDay & " - " & filename & " extracted." & Environment.NewLine
     End Sub
     Private Sub btnRebuild_Click(sender As Object, e As EventArgs) Handles btnRebuild.Click
+        'TODO:  Confirm endian before each rebuild.
         bigEndian = True
 
         Dim DCX As Boolean = False
@@ -1022,6 +1023,7 @@ Public Class Des_BNDBuild
                 If flags = &H2010200 Then
                     ' Demon's Souls
 
+
                     bigEndian = True
 
                     numFiles = fileList.Length - 2
@@ -1082,6 +1084,7 @@ Public Class Des_BNDBuild
                     UIntToBytes(totalFileSize, &H4)
                 ElseIf flags = &H20300 Then
                     ' Dark Souls
+                    'TODO:  Fix this endian check in particular.
 
                     bigEndian = False
 
