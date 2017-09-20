@@ -183,10 +183,9 @@ Public Class Des_BNDBuild
 
             Select Case Microsoft.VisualBasic.Left(StrFromBytes(0), 4)
                 Case "BHD5"
-                    If UIntFromBytes(&H4) = 0 Then
+                    bigEndian = False
+                    If Not (UIntFromBytes(&H4) And &HFF) = &HFF Then
                         bigEndian = True
-                    Else
-                        bigEndian = False
                     End If
 
                     fileList = "BHD5,"
@@ -303,7 +302,10 @@ Public Class Des_BNDBuild
                 Case "BHF3"
                     fileList = "BHF3,"
 
-                    If UIntFromBytes(&H10) = 0 Then
+
+                    REM this assumes we'll always have between 1 and 16777215 files 
+                    bigEndian = False
+                    If UIntFromBytes(&H10) >= &H1000000 Then
                         bigEndian = True
                     Else
                         bigEndian = False
