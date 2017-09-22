@@ -100,7 +100,7 @@ Partial Class Des_BNDBuild
         Me.lblVersion.Name = "lblVersion"
         Me.lblVersion.Size = New System.Drawing.Size(76, 13)
         Me.lblVersion.TabIndex = 42
-        Me.lblVersion.Text = "2017-07-26-11"
+        Me.lblVersion.Text = "2017-09-22-11"
         '
         'Des_BNDBuild
         '
