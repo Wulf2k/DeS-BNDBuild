@@ -2634,7 +2634,11 @@ Public Class Des_BNDBuild
                             Else
                                 currFileName = filepath + fileList(1)
                             End If
-                            tmpbytes = File.ReadAllBytes(currFileName)
+                            If IsRegulation Then
+                                tmpbytes = bytes
+                            Else
+                                tmpbytes = File.ReadAllBytes(currFileName)
+                            End If
 
                             currFileSize = tmpbytes.Length
 
