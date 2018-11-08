@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -84,6 +84,34 @@ Namespace My.Resources
         Friend ReadOnly Property fileidx() As String
             Get
                 Return ResourceManager.GetString("fileidx", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to /action/eventnameid.txt
+        '''/action/script/c0000.hks
+        '''/action/script/c0001.hks
+        '''/action/script/c0002.hks
+        '''/action/script/c0004.hks
+        '''/action/script/c0006.hks
+        '''/action/script/c0100.hks
+        '''/action/script/c1030.hks
+        '''/action/script/c1040.hks
+        '''/action/script/c1041.hks
+        '''/action/script/c1050.hks
+        '''/action/script/c1060.hks
+        '''/action/script/c1070.hks
+        '''/action/script/c1090.hks
+        '''/action/script/c1100.hks
+        '''/action/script/c1105.hks
+        '''/action/script/c1110.hks
+        '''/action/script/c1120.hks
+        '''/action/script/c1130.hks
+        '''/action/script/c113 [rest of string was truncated]&quot;;.
+        '''</summary>
+        Friend ReadOnly Property fileidx_ds3() As String
+            Get
+                Return ResourceManager.GetString("fileidx_ds3", resourceCulture)
             End Get
         End Property
     End Module
