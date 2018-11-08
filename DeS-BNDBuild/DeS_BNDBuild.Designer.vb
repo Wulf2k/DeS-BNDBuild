@@ -29,38 +29,33 @@ Partial Class Des_BNDBuild
         Me.btnExtract = New System.Windows.Forms.Button()
         Me.txtInfo = New System.Windows.Forms.TextBox()
         Me.lblVersion = New System.Windows.Forms.Label()
-        Me.SuspendLayout()
+        Me.SuspendLayout
         '
         'txtBNDfile
         '
-        Me.txtBNDfile.AllowDrop = True
-        Me.txtBNDfile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtBNDfile.Location = New System.Drawing.Point(59, 7)
-        Me.txtBNDfile.Margin = New System.Windows.Forms.Padding(4)
-        Me.txtBNDfile.Multiline = True
+        Me.txtBNDfile.AllowDrop = true
+        Me.txtBNDfile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtBNDfile.Location = New System.Drawing.Point(44, 6)
         Me.txtBNDfile.Name = "txtBNDfile"
-        Me.txtBNDfile.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtBNDfile.Size = New System.Drawing.Size(845, 204)
+        Me.txtBNDfile.Size = New System.Drawing.Size(635, 20)
         Me.txtBNDfile.TabIndex = 26
         '
         'lblGAFile
         '
         Me.lblGAFile.AutoSize = True
-        Me.lblGAFile.Location = New System.Drawing.Point(16, 11)
-        Me.lblGAFile.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblGAFile.Location = New System.Drawing.Point(12, 9)
         Me.lblGAFile.Name = "lblGAFile"
-        Me.lblGAFile.Size = New System.Drawing.Size(41, 17)
+        Me.lblGAFile.Size = New System.Drawing.Size(26, 13)
         Me.lblGAFile.TabIndex = 28
-        Me.lblGAFile.Text = "Files:"
+        Me.lblGAFile.Text = "File:"
         '
         'btnBrowse
         '
         Me.btnBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnBrowse.Location = New System.Drawing.Point(912, 7)
-        Me.btnBrowse.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnBrowse.Location = New System.Drawing.Point(682, 4)
         Me.btnBrowse.Name = "btnBrowse"
-        Me.btnBrowse.Size = New System.Drawing.Size(100, 28)
+        Me.btnBrowse.Size = New System.Drawing.Size(75, 23)
         Me.btnBrowse.TabIndex = 27
         Me.btnBrowse.Text = "Browse"
         Me.btnBrowse.UseVisualStyleBackColor = True
@@ -68,10 +63,9 @@ Partial Class Des_BNDBuild
         'btnRebuild
         '
         Me.btnRebuild.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnRebuild.Location = New System.Drawing.Point(912, 90)
-        Me.btnRebuild.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnRebuild.Location = New System.Drawing.Point(682, 33)
         Me.btnRebuild.Name = "btnRebuild"
-        Me.btnRebuild.Size = New System.Drawing.Size(100, 28)
+        Me.btnRebuild.Size = New System.Drawing.Size(75, 23)
         Me.btnRebuild.TabIndex = 30
         Me.btnRebuild.Text = "Rebuild"
         Me.btnRebuild.UseVisualStyleBackColor = True
@@ -79,10 +73,9 @@ Partial Class Des_BNDBuild
         'btnExtract
         '
         Me.btnExtract.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnExtract.Location = New System.Drawing.Point(912, 54)
-        Me.btnExtract.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnExtract.Location = New System.Drawing.Point(604, 33)
         Me.btnExtract.Name = "btnExtract"
-        Me.btnExtract.Size = New System.Drawing.Size(100, 28)
+        Me.btnExtract.Size = New System.Drawing.Size(75, 23)
         Me.btnExtract.TabIndex = 29
         Me.btnExtract.Text = "Extract"
         Me.btnExtract.UseVisualStyleBackColor = True
@@ -92,30 +85,28 @@ Partial Class Des_BNDBuild
         Me.txtInfo.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtInfo.Location = New System.Drawing.Point(16, 224)
-        Me.txtInfo.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtInfo.Location = New System.Drawing.Point(12, 62)
         Me.txtInfo.Multiline = True
         Me.txtInfo.Name = "txtInfo"
         Me.txtInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtInfo.Size = New System.Drawing.Size(989, 302)
+        Me.txtInfo.Size = New System.Drawing.Size(743, 142)
         Me.txtInfo.TabIndex = 31
         '
         'lblVersion
         '
         Me.lblVersion.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblVersion.AutoSize = True
-        Me.lblVersion.Location = New System.Drawing.Point(912, 203)
-        Me.lblVersion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblVersion.Location = New System.Drawing.Point(522, 38)
         Me.lblVersion.Name = "lblVersion"
-        Me.lblVersion.Size = New System.Drawing.Size(105, 17)
+        Me.lblVersion.Size = New System.Drawing.Size(76, 13)
         Me.lblVersion.TabIndex = 42
-        Me.lblVersion.Text = "20XX-10-30-01"
+        Me.lblVersion.Text = "2017-09-23-23"
         '
         'Des_BNDBuild
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1023, 542)
+        Me.ClientSize = New System.Drawing.Size(767, 216)
         Me.Controls.Add(Me.lblVersion)
         Me.Controls.Add(Me.txtInfo)
         Me.Controls.Add(Me.btnRebuild)
@@ -123,15 +114,14 @@ Partial Class Des_BNDBuild
         Me.Controls.Add(Me.txtBNDfile)
         Me.Controls.Add(Me.lblGAFile)
         Me.Controls.Add(Me.btnBrowse)
-        Me.DoubleBuffered = True
-        Me.Margin = New System.Windows.Forms.Padding(4)
-        Me.MinimumSize = New System.Drawing.Size(474, 211)
+        Me.DoubleBuffered = true
+        Me.MinimumSize = New System.Drawing.Size(360, 180)
         Me.Name = "Des_BNDBuild"
-        Me.Text = "Wulf's BND Rebuilder BATCH PROCESSING"
-        Me.ResumeLayout(False)
-        Me.PerformLayout()
+        Me.Text = "Wulf's BND Rebuilder"
+        Me.ResumeLayout(false)
+        Me.PerformLayout
 
-    End Sub
+End Sub
     Friend WithEvents txtBNDfile As System.Windows.Forms.TextBox
     Friend WithEvents lblGAFile As System.Windows.Forms.Label
     Friend WithEvents btnBrowse As System.Windows.Forms.Button
