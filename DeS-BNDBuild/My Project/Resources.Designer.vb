@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -79,8 +79,7 @@ Namespace My.Resources
         '''/chr/c0000_a9x.anibnd.dcx
         '''/chr/c0000_c2060.anibnd.dcx
         '''/chr/c0000_c2290.anibnd.dcx
-        '''/chr/c0000_c2300.anibnd.dcx
-        '''/chr/c0000_c2310.a [rest of string was truncated]&quot;;.
+        '''/chr/c0000_c2300.anibnd.dcx        ''' [rest of string was truncated]&quot;;.
         '''</summary>
         Friend ReadOnly Property fileidx() As String
             Get
@@ -108,8 +107,7 @@ Namespace My.Resources
         '''/action/script/c1110.hks
         '''/action/script/c1120.hks
         '''/action/script/c1130.hks
-        '''/action/script/c1131.hks
-        '''/action/scrip [rest of string was truncated]&quot;;.
+        '''/action/script/c113 [rest of string was truncated]&quot;;.
         '''</summary>
         Friend ReadOnly Property fileidx_ds3() As String
             Get
