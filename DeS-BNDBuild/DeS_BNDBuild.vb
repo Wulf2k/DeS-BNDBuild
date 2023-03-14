@@ -2125,6 +2125,8 @@ Public Class Des_BNDBuild
                                         currFileNameOffset += EncodeFileName(Microsoft.VisualBasic.Right(fileList(i + 2), fileList(i + 2).Length - (InStr(fileList(i + 2), ",")))).Length + 1
                                 End Select
                             Next
+
+                            output(TimeOfDay & " - " & filename & " rebuilt." & Environment.NewLine)
                         Case "BND4"
 
                             'Reversing and hash grouping code by TKGP
@@ -2874,7 +2876,8 @@ Public Class Des_BNDBuild
     End Sub
 
     Private Sub Des_BNDBuild_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+        updateUITimer.Interval = 200
+        updateUITimer.Start()
     End Sub
 
     Private Sub updateUI() Handles updateUITimer.Tick
