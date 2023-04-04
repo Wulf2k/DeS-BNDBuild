@@ -1,12 +1,10 @@
 ﻿Imports System.IO
 Imports System.IO.Compression
+Imports System.IO.Compression.FileSystem
 Imports System.Numerics
 Imports System.Threading
 Imports System.Security.Cryptography.RijndaelManaged
 Imports System.Security.Cryptography
-
-
-
 Public Class Des_BNDBuild
 
     Public Shared bytes() As Byte
@@ -438,9 +436,56 @@ Public Class Des_BNDBuild
                     End If
                 End If
 
+                If Microsoft.VisualBasic.Left(RAsciiStr(0), 4) = "DCP" Then
+                    Select Case RAsciiStr(4)
+                        Case "DFLT"
+                            REM DeS, c3160.chrbnd.dcx
+                            REM DeS, c9705.chrbnd.dcx
+                            REM DeS, \map\m06_00_00_00\m2000b1.flver.dcx
+                            REM DeS, \map\m09_00_00_00\m9999b1.flver.dcx
+
+                            DCX = True
+                            Dim startOffset As UInteger
+
+                            startOffset = &H2C
+
+                            Dim newbytes(RUInt32(&H28) - 3) As Byte
+                            Dim decbytes(RUInt32(&H24) - 1) As Byte
+
+                            fileList = "DCP" & Environment.NewLine &
+                                DecodeFileName(&H4) & Environment.NewLine &
+                                Microsoft.VisualBasic.Left(filename, filename.Length - &H4) & Environment.NewLine
+
+                            Array.Copy(bytes, startOffset + 2, newbytes, 0, newbytes.Length)
+
+                            decbytes = Decompress(newbytes)
+
+                            currFileName = filepath & Microsoft.VisualBasic.Left(filename, filename.Length - &H4)
+                            File.WriteAllBytes(currFileName, decbytes)
+                            output(TimeOfDay & " - " & filename & " extracted." & Environment.NewLine)
+
+
+                            currFilePath = Microsoft.VisualBasic.Left(currFileName, InStrRev(currFileName, "\"))
+
+                            If (Not System.IO.Directory.Exists(currFilePath)) Then
+                                System.IO.Directory.CreateDirectory(currFilePath)
+                            End If
+
+
+                            File.WriteAllText(filepath & filename & ".info.txt", fileList)
+
+
+                            bytes = decbytes
+                            filepath = currFilePath
+                            filename = Microsoft.VisualBasic.Right(currFileName, currFileName.Length - filepath.Length)
+                    End Select
+
+                End If
+
                 If Microsoft.VisualBasic.Left(RAsciiStr(0), 4) = "DCX" Then
                     Select Case RAsciiStr(&H28)
                         Case "EDGE"
+                            REM DaSPS3, map\m10_00_00_00\m5260B0A10.flver.dcx
                             DCX = True
                             Dim newbytes(&H10000) As Byte
                             Dim decbytes(&H10000) As Byte
@@ -450,7 +495,9 @@ Public Class Des_BNDBuild
                             Dim numChunks As UInteger = RUInt32(&H68)
                             Dim DecSize As UInteger
 
-                            fileList = DecodeFileName(&H28) & Environment.NewLine & RUInt64(&H10) & Environment.NewLine & Microsoft.VisualBasic.Left(filename, filename.Length - &H4) & Environment.NewLine
+                            fileList = DecodeFileName(&H28) & Environment.NewLine &
+                                RUInt64(&H10) & Environment.NewLine &
+                                Microsoft.VisualBasic.Left(filename, filename.Length - &H4) & Environment.NewLine
 
                             For i = 0 To numChunks - 1
                                 If i = numChunks - 1 Then
@@ -1192,6 +1239,8 @@ Public Class Des_BNDBuild
 
                         Dim texWidth As UInt16 = 0
                         Dim texHeight As UInt16 = 0
+
+
 
                         bigEndian = False
                         If RUInt32(&H8) >= &H1000000 Then
@@ -2594,9 +2643,6 @@ Public Class Des_BNDBuild
                                     texWidth = fileList(i + 2).Split(",")(1)
                                     texHeight = fileList(i + 2).Split(",")(2)
 
-                                    REM texWidth = Microsoft.VisualBasic.Right(Microsoft.VisualBasic.Left(fileList(i + 2), InStrRev(fileList(i + 2), ",") - 1), Microsoft.VisualBasic.Left(fileList(i + 2), InStrRev(fileList(i + 2), ",") - 1).Length - InStr(Microsoft.VisualBasic.Left(fileList(i + 2), InStrRev(fileList(i + 2), ",") - 1), ","))
-
-
                                     WUint32(currFileOffset, &H10 + i * &H20)
                                     WUint32(currFileSize, &H14 + i * &H20)
                                     WUint32(currFileFlags1, &H18 + i * &H20)
@@ -2734,8 +2780,48 @@ Public Class Des_BNDBuild
                     fileList = File.ReadAllLines(filepath & filename & ".info.txt")
 
                     Select Case Microsoft.VisualBasic.Left(fileList(0), 4)
+                        Case "DCP"
+                            REM DeS, map\m99_60_00_00\m2000b1.flver.dcx
+
+                            Dim cmpBytes() As Byte
+                            Dim zipBytes() As Byte = {}
+
+                            If fileList.Length > 2 Then
+                                currFileName = filepath + fileList(2)
+                            Else
+                                currFileName = filepath + fileList(1)
+                            End If
+
+                            tmpbytes = File.ReadAllBytes(currFileName)
+
+                            currFileSize = tmpbytes.Length + 2
+
+                            ReDim bytes(&H2B)
+
+
+                            cmpBytes = Compress(tmpbytes, "zlib")
+
+                            ReDim Preserve bytes(bytes.Length + cmpBytes.Length - 1)
+
+                            WAsciiStr("DCP", &H0)
+                            WAsciiStr("DFLT", &H4)
+                            WUint32(&H20, &H8)
+                            WUint32(&H9000000, &HC)
+                            WUint32(&H10100, &H1C)
+
+                            WAsciiStr("DCS", &H20)
+                            WUint32(currFileSize, &H24)
+                            WUint32(cmpBytes.Length, &H28)
+
+                            Array.Copy(cmpBytes, 0, bytes, &H2C, cmpBytes.Length)
+
+                            ReDim Preserve bytes(bytes.Length + 7)
+
+                            WAsciiStr("DCA", bytes.Length - 8)
+                            WUint32(&H8, bytes.Length - 4)
+
                         Case "EDGE"
-                            Dim chunkBytes(&H10000) As Byte
+                            Dim chunkBytes(&HFFFF) As Byte
                             Dim cmpChunkBytes() As Byte
                             Dim zipBytes() As Byte = {}
 
@@ -2748,7 +2834,7 @@ Public Class Des_BNDBuild
 
                             currFileSize = tmpbytes.Length
 
-                            ReDim bytes(&H83)
+                            ReDim bytes(&H7F)
 
                             Dim fileRemaining As Integer = tmpbytes.Length
                             Dim fileDone As Integer = 0
@@ -2765,6 +2851,7 @@ Public Class Des_BNDBuild
                                     fileToDo = fileRemaining
                                 End If
 
+                                ReDim Preserve chunkBytes(fileToDo - 1)
 
                                 Array.Copy(tmpbytes, fileDone, chunkBytes, 0, fileToDo)
                                 cmpChunkBytes = Compress(chunkBytes)
@@ -2778,21 +2865,27 @@ Public Class Des_BNDBuild
                                 End If
                                 lastchunk += padding
 
-                                ReDim Preserve zipBytes(lastchunk + cmpChunkBytes.Length)
+                                ReDim Preserve zipBytes(lastchunk + cmpChunkBytes.Length - 1)
                                 Array.Copy(cmpChunkBytes, 0, zipBytes, lastchunk, cmpChunkBytes.Length)
 
 
                                 fileDone += fileToDo
                                 fileRemaining -= fileToDo
 
-                                ReDim Preserve bytes(bytes.Length + &H10)
+                                If fileRemaining > 0 Then ReDim Preserve bytes(bytes.Length - 1 + &H10)
 
                                 WUint32(lastchunk, &H64 + chunks * &H10)
                                 WUint32(cmpChunkBytes.Length, &H68 + chunks * &H10)
                                 WUint32(&H1, &H6C + chunks * &H10)
 
                             End While
-                            ReDim Preserve bytes(bytes.Length + zipBytes.Length)
+                            ReDim Preserve bytes(bytes.Length + zipBytes.Length - 1)
+                            If bytes.Length Mod &H10 > 0 Then
+                                padding = &H10 - (bytes.Length Mod &H10)
+                            Else
+                                padding = 0
+                            End If
+                            ReDim Preserve bytes(bytes.Length + padding - 1)
 
                             WAsciiStr("DCX", &H0)
                             WUint32(&H10000, &H4)
@@ -2902,10 +2995,19 @@ Public Class Des_BNDBuild
 
     End Sub
 
-    Public Function Decompress(ByVal cmpBytes() As Byte) As Byte()
+    Public Function Decompress(ByVal cmpBytes() As Byte, Optional ByVal compType As String = "deflate") As Byte()
         Dim sourceFile As MemoryStream = New MemoryStream(cmpBytes)
         Dim destFile As MemoryStream = New MemoryStream()
-        Dim compStream As New DeflateStream(sourceFile, CompressionMode.Decompress)
+
+        Dim compStream As New Object
+
+        Select Case compType
+            Case "deflate"
+                compStream = New DeflateStream(sourceFile, CompressionMode.Decompress)
+            Case Else
+                output("Decompress type not found")
+        End Select
+
         Dim myByte As Integer = compStream.ReadByte()
 
         While myByte <> -1
@@ -2931,26 +3033,52 @@ Public Class Des_BNDBuild
         Return (b << 16) Or a
     End Function
 
-    Public Function Compress(ByVal cmpBytes() As Byte) As Byte()
+    Public Function Compress(ByVal cmpBytes() As Byte, Optional ByVal compType As String = "deflate") As Byte()
         Dim ms As New MemoryStream()
         Dim zipStream As Stream = Nothing
 
-        zipStream = New DeflateStream(ms, CompressionMode.Compress, True)
-        zipStream.Write(cmpBytes, 0, cmpBytes.Length)
-        zipStream.Close()
+        Select Case compType
+            Case "zlib"
+                zipStream = New DeflateStream(ms, CompressionMode.Compress, True)
+                ms.WriteByte(&H78)
+                ms.WriteByte(&HDA)
+                zipStream.Write(cmpBytes, 0, cmpBytes.Length)
+                zipStream.Close()
 
-        ms.Position = 0
+                ms.Position = 0
 
-        Dim outBytes(ms.Length + 3) As Byte
+                Dim outBytes(ms.Length + 3) As Byte
 
-        Dim adlerBytes As Byte() = BitConverter.GetBytes(Adler32(cmpBytes))
-        Array.Reverse(adlerBytes)
-        Array.Copy(adlerBytes, 0, outBytes, ms.Length, 4)
+                Dim adlerBytes As Byte() = BitConverter.GetBytes(Adler32(cmpBytes))
+                Array.Reverse(adlerBytes)
+                Array.Copy(adlerBytes, 0, outBytes, ms.Length, 4)
 
-        ms.Read(outBytes, 0, ms.Length)
+                ms.Read(outBytes, 0, ms.Length)
+                ms.Close()
+                Return outBytes
+            Case "deflate"
+                zipStream = New DeflateStream(ms, CompressionMode.Compress, True)
+                zipStream.Write(cmpBytes, 0, cmpBytes.Length)
+                zipStream.Close()
+
+                ms.Position = 0
+
+                Dim outBytes(ms.Length + 3) As Byte
+
+                Dim adlerBytes As Byte() = BitConverter.GetBytes(Adler32(cmpBytes))
+                Array.Reverse(adlerBytes)
+                Array.Copy(adlerBytes, 0, outBytes, ms.Length, 4)
+
+                ms.Read(outBytes, 0, ms.Length)
+                ms.Close()
+                Return outBytes
+            Case Else
+                output("Compress type not found")
+        End Select
 
 
-        Return outBytes
+
+        Return Nothing
     End Function
 
     Private Sub txt_Drop(sender As Object, e As System.Windows.Forms.DragEventArgs) Handles txtBNDfile.DragDrop
