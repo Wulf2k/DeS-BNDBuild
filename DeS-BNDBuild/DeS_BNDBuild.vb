@@ -119,16 +119,6 @@ Public Class Des_BNDBuild
         Return Str
     End Function
 
-    Private Function RAsciiStrNumBytes(ByVal loc As UInteger, ByRef num As UInteger) As String
-        Dim Str As String = ""
-
-        For i As UInteger = 0 To num - 1
-            Str = Str + Convert.ToChar(bytes(loc))
-            loc += 1
-        Next
-
-        Return Str
-    End Function
 
     Private Function RUInt16(ByVal loc As UInteger) As UInt16
         Dim tmpUint As UInteger = 0
@@ -436,7 +426,7 @@ Public Class Des_BNDBuild
                     End If
                 End If
 
-                If Microsoft.VisualBasic.Left(RAsciiStr(0), 4) = "DCP" Then
+                If RAsciiStr(0, 4) = "DCP" Then
                     Select Case RAsciiStr(4)
                         Case "DFLT"
                             REM DeS, c3160.chrbnd.dcx
@@ -482,7 +472,7 @@ Public Class Des_BNDBuild
 
                 End If
 
-                If Microsoft.VisualBasic.Left(RAsciiStr(0), 4) = "DCX" Then
+                If RAsciiStr(0, 4) = "DCX" Then
                     Select Case RAsciiStr(&H28)
                         Case "EDGE"
                             REM DaSPS3, map\m10_00_00_00\m5260B0A10.flver.dcx
@@ -1036,7 +1026,7 @@ Public Class Des_BNDBuild
                         Dim currFileNameOffset As UInteger = 0
                         Dim currFileBytes() As Byte = {}
 
-                        BinderID = Microsoft.VisualBasic.Left(RAsciiStr(&H0), 12)
+                        BinderID = RAsciiStr(&H0, 12)
                         flags = RUInt32(&HC)
 
                         If flags = &H74000000 Or flags = &H54000000 Or flags = &H70000000 Or flags = &H78000000 Or flags = &H7C000000 Or flags = &H5C000000 Then bigEndian = False
@@ -1165,7 +1155,7 @@ Public Class Des_BNDBuild
                         Dim type As Byte = 0
                         bigEndian = False
 
-                        BinderID = Microsoft.VisualBasic.Left(RAsciiStr(&H0), 4) + Microsoft.VisualBasic.Left(RAsciiStr(&H18), 8)
+                        BinderID = RAsciiStr(&H0, 4) + RAsciiStr(&H18, 8)
 
                         numFiles = RUInt32(&HC)
                         flags = RUInt32(&H30)
@@ -1254,7 +1244,7 @@ Public Class Des_BNDBuild
                         If flags = &H2010200 Or flags = &H2010000 Then
                             ' Demon's Souls (headerless DDS)
 
-                            BinderID = Microsoft.VisualBasic.Left(RAsciiStr(&H0), 3)
+                            BinderID = RAsciiStr(&H0, 3)
                             numFiles = RUInt32(&H8)
                             currFileNameOffset = RUInt32(&H10)
 
@@ -1296,7 +1286,7 @@ Public Class Des_BNDBuild
                         ElseIf flags = &H20300 Or flags = &H20304 Then
                             ' Dark Souls
 
-                            BinderID = Microsoft.VisualBasic.Left(RAsciiStr(&H0), 3)
+                            BinderID = RAsciiStr(&H0, 3)
                             numFiles = RUInt32(&H8)
 
                             fileList = BinderID & Environment.NewLine & flags & Environment.NewLine
@@ -1324,7 +1314,7 @@ Public Class Des_BNDBuild
                         ElseIf flags = &H2030200 Then
                             ' Dark Souls/Demon's Souls (headerless DDS)
                             bigEndian = True
-                            BinderID = Microsoft.VisualBasic.Left(RAsciiStr(&H0), 3)
+                            BinderID = RAsciiStr(&H0, 3)
                             numFiles = RUInt32(&H8)
 
                             fileList = BinderID & Environment.NewLine & flags & Environment.NewLine
@@ -1368,7 +1358,7 @@ Public Class Des_BNDBuild
                         ElseIf flags = &H10300 Then
                             ' Dark Souls III
 
-                            BinderID = Microsoft.VisualBasic.Left(RAsciiStr(&H0), 3)
+                            BinderID = RAsciiStr(&H0, 3)
                             numFiles = RUInt32(&H8)
                             fileList = BinderID & Environment.NewLine & flags & Environment.NewLine
 
