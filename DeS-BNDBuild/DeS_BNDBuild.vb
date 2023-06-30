@@ -103,11 +103,11 @@ Public Class Des_BNDBuild
         Return UnicodeEncoding.GetString(b.ToArray())
     End Function
 
-    Private Function RAsciiStr(ByVal loc As UInteger) As String
+    Private Function RAsciiStr(ByVal loc As UInteger, Optional ByVal num As UInteger = UInteger.MaxValue) As String
         Dim Str As String = ""
         Dim cont As Boolean = True
 
-        While cont
+        While (cont And (loc < bytes.Length - 1) And (loc < num))
             If bytes(loc) > 0 Then
                 Str = Str + Convert.ToChar(bytes(loc))
                 loc += 1
@@ -580,7 +580,7 @@ Public Class Des_BNDBuild
                 Dim OnlyDCX = False
 
 
-                Select Case Microsoft.VisualBasic.Left(RAsciiStr(0), 4)
+                Select Case RAsciiStr(0, 4)
                     Case "BHD5"
 
                         'DS3 BHD5 Reversing by Atvaark
@@ -646,7 +646,7 @@ Public Class Des_BNDBuild
 
                         BinderID = ""
                         If IsDS3 Then
-                            BinderID = RAsciiStrNumBytes(&H1C, RUInt32(&H18))
+                            BinderID = RAsciiStr(&H1C, RUInt32(&H18))
                         Else
                             For k = 0 To &HF
                                 Dim tmpchr As Char
@@ -718,9 +718,9 @@ Public Class Des_BNDBuild
 
                                             Dim ms As New MemoryStream()
                                             Dim aes As New AesManaged() With {
-                                                .Mode = CipherMode.ECB,
-                                                .Padding = PaddingMode.None
-                                            }
+                                                    .Mode = CipherMode.ECB,
+                                                    .Padding = PaddingMode.None
+                                                }
 
                                             Dim cs As New CryptoStream(ms, aes.CreateDecryptor(aesKey, iv), CryptoStreamMode.Write)
 
@@ -755,9 +755,9 @@ Public Class Des_BNDBuild
 
                                         Dim ms As New MemoryStream()
                                         Dim aes As New AesManaged() With {
-                                            .Mode = CipherMode.ECB,
-                                            .Padding = PaddingMode.None
-                                        }
+                                                .Mode = CipherMode.ECB,
+                                                .Padding = PaddingMode.None
+                                            }
 
                                         Dim cs As New CryptoStream(ms, aes.CreateDecryptor(aesKey, iv), CryptoStreamMode.Write)
 
@@ -1416,7 +1416,7 @@ Public Class Des_BNDBuild
 
 
         Catch ex As Exception
-            MessageBox.Show(ex.Message)
+            'MessageBox.Show(ex.Message)
             'MessageBox.Show("Stack Trace: " & vbCrLf & ex.StackTrace)
             output(TimeOfDay & " - Unhandled exception - " & ex.Message & ex.StackTrace & Environment.NewLine)
         End Try
